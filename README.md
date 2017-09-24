@@ -56,7 +56,7 @@ class LineChart extends Component {
 }
 ```
 
-Make sure to include the provided CSS file to ensure that all appropriate styles for billboard are included as well. The example above is if you are using `webpack` or a similar bundler, but the styles are global so bring them in however is best for your application.
+Make sure to include the provided CSS file to ensure that all appropriate styles for billboard are included as well (this is the same CSS file provided by `billboard.js`, so if you are already including that then no need to include this as well). The example above is if you are using `webpack` or a similar bundler, but the styles are global so bring them in however is best for your application.
 
 ## Props
 
