@@ -1,4 +1,5 @@
 {
+  "author": "planttheidea <tony.quetano@planttheidea.com>",
   "ava": {
     "babel": "inherit",
     "failFast": true,
@@ -7,12 +8,15 @@
     "source": ["src/*.js"],
     "verbose": true
   },
-  "author": "planttheidea <tony.quetano@planttheidea.com>",
+  "browserslist": ["defaults", "Explorer >= 9", "Safari >= 6", "Opera >= 15", "iOS >= 8", "Android >= 4"],
+  "bugs": {
+    "url": "https://github.com/planttheidea/react-billboardjs/issues"
+  },
   "name": "react-billboardjs",
   "dependencies": {
     "billboard.js": "^1.1.1",
     "prop-types": "^15.5.10",
-    "react": "^15.6.1"
+    "react": "^15.3.0"
   },
   "description": "React component for the billboard.js charting library",
   "devDependencies": {
@@ -40,7 +44,7 @@
     "nyc": "^11.2.1",
     "optimize-js-plugin": "^0.0.4",
     "raf": "^3.3.2",
-    "react-dom": "^15.6.1",
+    "react-dom": "^15.3.0",
     "react-test-renderer": "^15.6.1",
     "rimraf": "^2.6.2",
     "sinon": "^3.3.0",
@@ -48,9 +52,12 @@
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
   },
+  "homepage": "https://github.com/planttheidea/react-billboardjs#readme",
+  "keywords": ["react", "react-component", "component", "billboard", "billboard.js", "d3", "chart", "graph", "svg"],
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "name": "react-billboardjs",
   "repository": "git@github.com:planttheidea/react-billboardjs.git",
   "scripts": {
     "build": "NODE_ENV=development webpack --progress --colors --config=webpack/webpack.config.js",
