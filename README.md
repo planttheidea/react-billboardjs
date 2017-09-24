@@ -6,7 +6,7 @@
 
 React component for the billboard.js charting library
 
-*This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modifications specific to billboard and enhancements*
+*This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modifications for `billboard.js` and enhancements for rendering*
 
 ## Table of contents
 * [Installation](#installation)
