@@ -1,5 +1,4 @@
 // external dependencies
-import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 
 // src
@@ -11,6 +10,15 @@ const CHART_DATA = {
     data2: [120]
   },
   type: 'donut'
+};
+
+const SIZE = {
+  height: 500,
+  width: 500
+};
+
+const STYLE = {
+  display: 'inline-block'
 };
 
 class DonutChart extends PureComponent {
@@ -201,13 +209,8 @@ class DonutChart extends PureComponent {
       <BillboardChart
         data={CHART_DATA}
         ref={this.getRef}
-        size={{
-          height: 500,
-          width: 500
-        }}
-        style={{
-          display: 'inline-block'
-        }}
+        size={SIZE}
+        style={STYLE}
       />
       /* eslint-enable prettier*/
     );

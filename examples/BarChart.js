@@ -1,5 +1,4 @@
 // external dependencies
-import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 
 // src
@@ -46,6 +45,7 @@ class BarChart extends PureComponent {
       /* eslint-disable prettier */
       <BillboardChart
         axis={CHART_AXIS}
+        className="bar"
         data={CHART_DATA}
         ref={this.getRef}
       />

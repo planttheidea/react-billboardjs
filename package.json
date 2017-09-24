@@ -62,6 +62,7 @@
     "dev": "NODE_ENV=development webpack-dev-server --progress --colors --config=webpack/webpack.config.dev.js",
     "lint": "eslint --max-warnings 0 src",
     "lint:fix": "npm run lint -- --fix",
+    "prepublish": "if in-publish; then npm run prepublish:compile; fi",
     "prepublish:compile":
       "npm run lint && npm run test:coverage && npm run clean && npm run copy:css && npm run transpile:lib && npm run transpile:es && npm run build && npm run build:minified",
     "start": "npm run dev",

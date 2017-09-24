@@ -136,6 +136,18 @@ export const createLoadData = (instance) => {
   };
 };
 
+export const createRedraw = (instance) => {
+  /**
+   * @function redraw
+   *
+   * @description
+   * trigger a redraw of the chart
+   */
+  return () => {
+    instance.chart.flush();
+  };
+};
+
 export const createUnloadData = (instance) => {
   /**
    * @function unloadData
@@ -230,6 +242,7 @@ class BillboardChart extends Component {
   destroyChart = createDestroyChart(this);
   generateChart = createGenerateChart(this);
   loadData = createLoadData(this);
+  redraw = createRedraw(this);
   setChartRef = createAssignElementToRef(this, 'chartElement');
   unloadData = createUnloadData(this);
   updateChart = createUpdateChart(this);

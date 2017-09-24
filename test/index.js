@@ -238,6 +238,20 @@ test('if loadData will call load on the instance chart', (t) => {
   t.true(instance.chart.load.calledWith(data));
 });
 
+test('if redrawChart will trigger flush on the chart', (t) => {
+  const instance = {
+    chart: {
+      flush: sinon.spy()
+    }
+  };
+
+  const redraw = component.createRedraw(instance);
+
+  redraw();
+
+  t.true(instance.chart.flush.calledOnce);
+});
+
 test('if unloadData will call unload on the instance chart', (t) => {
   const instance = {
     chart: {

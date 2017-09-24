@@ -1,5 +1,4 @@
 // external dependencies
-import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 
 // src
@@ -12,6 +11,10 @@ const LINE_CHART_DATA = {
     ['data3', 300, 200, 160, 400, 250, 250]
   ],
   type: 'line'
+};
+
+const SUBCHART = {
+  show: true
 };
 
 class LineChart extends PureComponent {
@@ -58,6 +61,7 @@ class LineChart extends PureComponent {
         data={this.state.data}
         isPure
         ref={this.getRef}
+        subchart={SUBCHART}
       />
       /* eslint-enable prettier*/
     );
