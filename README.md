@@ -60,7 +60,7 @@ Make sure to include the provided CSS file to ensure that all appropriate styles
 
 ## Props
 
-All top-level properties available on the [`billboard.js` options](https://naver.github.io/billboard.js/release/latest/doc/) are passable as props, so for more detail about each of those props please check there. There are also a few additional props specific to the component:
+All top-level properties available on the `billboard.js` options are passable as props, so for more detail about each of those props please check [their documentation site](https://naver.github.io/billboard.js/release/latest/doc/). There are also a few additional props specific to the component:
 * className `{string}`
 * isPure `{boolean}`
 * style `{Object}`
@@ -123,7 +123,7 @@ Should the current data be unloaded before the new data will be loaded.
 
 ## Managing the internal chart
 
-If you capture the `ref` of the chart, you will gain access to the instance, which allows you to use both the component methods and `billboard.js` native methods.
+If you capture the `ref` of the chart, you will gain access to the instance, which allows you to use both the component methods and the `billboard.js` native chart.
 
 ```javascript
 class Chart extends PureComponent {
