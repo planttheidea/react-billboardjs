@@ -23,6 +23,8 @@ module.exports = Object.assign({}, defaultConfig, {
 
   entry: [path.resolve(statics.ROOT, 'examples', 'App.js')],
 
+  externals: undefined,
+
   module: Object.assign({}, defaultConfig.module, {
     rules: [
       ...defaultConfig.module.rules.map((rule) => {
