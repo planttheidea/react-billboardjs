@@ -11,9 +11,9 @@ import * as bb from 'src/bb';
 
 const BillboardChart = component.default;
 
-const sleep = (ms = 0) => {
+const nextFrame = () => {
   return new Promise((resolve) => {
-    setTimeout(resolve, ms);
+    setTimeout(resolve, 1000 / 60 + 50);
   });
 };
 
@@ -27,7 +27,7 @@ test('if componentDidMount will fire updateChart with props on the first frame a
 
   componentDidMount();
 
-  await sleep(1000 / 60 + 50);
+  await nextFrame();
 
   t.true(instance.updateChart.calledOnce);
   t.true(instance.updateChart.calledWith(instance.props));
@@ -352,32 +352,86 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
   t.true(instance.loadData.calledWith(props.data));
 });
 
-test('if BillboardChart renders correctly with default props', (t) => {
+test.serial('if BillboardChart renders correctly with default props', async (t) => {
   const props = {};
+
+  const chart = {
+    load: sinon.spy()
+  };
+
+  const bbStub = {
+    generate() {
+      return chart;
+    }
+  };
+
+  const stub = sinon.stub(bb, 'default').returns(bbStub);
 
   const wrapper = shallow(<BillboardChart {...props} />);
 
   t.snapshot(toJson(wrapper));
+
+  await nextFrame();
+
+  t.true(stub.calledOnce);
+
+  stub.restore();
 });
 
-test('if BillboardChart renders correctly with a custom className', (t) => {
+test.serial('if BillboardChart renders correctly with a custom className', async (t) => {
   const props = {
     className: 'className'
   };
 
+  const chart = {
+    load: sinon.spy()
+  };
+
+  const bbStub = {
+    generate() {
+      return chart;
+    }
+  };
+
+  const stub = sinon.stub(bb, 'default').returns(bbStub);
+
   const wrapper = shallow(<BillboardChart {...props} />);
 
   t.snapshot(toJson(wrapper));
+
+  await nextFrame();
+
+  t.true(stub.calledOnce);
+
+  stub.restore();
 });
 
-test('if BillboardChart renders correctly with a custom style object', (t) => {
+test.serial('if BillboardChart renders correctly with a custom style object', async (t) => {
   const props = {
     style: {
       display: 'inline-block'
     }
   };
 
+  const chart = {
+    load: sinon.spy()
+  };
+
+  const bbStub = {
+    generate() {
+      return chart;
+    }
+  };
+
+  const stub = sinon.stub(bb, 'default').returns(bbStub);
+
   const wrapper = shallow(<BillboardChart {...props} />);
 
   t.snapshot(toJson(wrapper));
+
+  await nextFrame();
+
+  t.true(stub.calledOnce);
+
+  stub.restore();
 });

@@ -6,6 +6,34 @@ import PropTypes from 'prop-types';
 // billboard
 import bb from './bb';
 
+// shapes
+import {
+  AREA_SHAPE,
+  AXIS_SHAPE,
+  BAR_SHAPE,
+  COLOR_SHAPE,
+  DATA_SHAPE,
+  DONUT_SHAPE,
+  GAUGE_SHAPE,
+  GRID_SHAPE,
+  INTERACTION_SHAPE,
+  LEGEND_SHAPE,
+  LINE_SHAPE,
+  PADDING_SHAPE,
+  PIE_SHAPE,
+  POINT_SHAPE,
+  REGION_SHAPE,
+  RESIZE_SHAPE,
+  SIZE_SHAPE,
+  SPLINE_SHAPE,
+  SUBCHART_SHAPE,
+  SVG_SHAPE,
+  TITLE_SHAPE,
+  TOOLTIP_SHAPE,
+  TRANSITION_SHAPE,
+  ZOOM_SHAPE
+} from './shapes';
+
 export const createComponentDidMount = (instance) => {
   /**
    * @function componentDidMount
@@ -190,37 +218,43 @@ class BillboardChart extends Component {
   static displayName = 'BillboardChart';
 
   static propTypes = {
-    area: PropTypes.object,
-    axis: PropTypes.object,
-    bar: PropTypes.object,
+    area: AREA_SHAPE,
+    axis: AXIS_SHAPE,
+    bar: BAR_SHAPE,
     className: PropTypes.string,
-    color: PropTypes.object,
-    data: PropTypes.object.isRequired,
-    donut: PropTypes.object,
-    gauge: PropTypes.object,
-    grid: PropTypes.object,
-    interaction: PropTypes.object,
+    clipPath: PropTypes.bool,
+    color: COLOR_SHAPE,
+    data: DATA_SHAPE.isRequired,
+    donut: DONUT_SHAPE,
+    gauge: GAUGE_SHAPE,
+    grid: GRID_SHAPE,
+    interaction: INTERACTION_SHAPE,
     isPure: PropTypes.bool,
-    legend: PropTypes.object,
-    line: PropTypes.object,
+    legend: LEGEND_SHAPE,
+    line: LINE_SHAPE,
+    onafterinit: PropTypes.func,
+    onbeforeinit: PropTypes.func,
     oninit: PropTypes.func,
-    onmouseover: PropTypes.func,
     onmouseout: PropTypes.func,
+    onmouseover: PropTypes.func,
     onrendered: PropTypes.func,
     onresize: PropTypes.func,
     onresized: PropTypes.func,
-    padding: PropTypes.object,
-    pie: PropTypes.object,
-    point: PropTypes.object,
-    regions: PropTypes.array,
-    size: PropTypes.object,
+    padding: PADDING_SHAPE,
+    pie: PIE_SHAPE,
+    point: POINT_SHAPE,
+    regions: PropTypes.arrayOf(REGION_SHAPE),
+    resize: RESIZE_SHAPE,
+    size: SIZE_SHAPE,
+    spline: SPLINE_SHAPE,
     style: PropTypes.object,
-    subchart: PropTypes.object,
-    title: PropTypes.object,
-    tooltip: PropTypes.object,
-    transition: PropTypes.object,
+    subchart: SUBCHART_SHAPE,
+    svg: SVG_SHAPE,
+    title: TITLE_SHAPE,
+    tooltip: TOOLTIP_SHAPE,
+    transition: TRANSITION_SHAPE,
     unloadBeforeLoad: PropTypes.bool,
-    zoom: PropTypes.object
+    zoom: ZOOM_SHAPE
   };
 
   static defaultProps = {
