@@ -25,6 +25,12 @@ module.exports = {
       commonjs2: 'd3',
       root: 'd3'
     },
+    'prop-types': {
+      amd: 'prop-types',
+      commonjs: 'prop-types',
+      commonjs2: 'prop-types',
+      root: 'PropTypes'
+    },
     react: {
       amd: 'react',
       commonjs: 'react',
