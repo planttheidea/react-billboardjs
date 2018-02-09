@@ -205,12 +205,7 @@ export const createUpdateChart = (instance) => {
     if (!instance.chart) {
       instance.chart = instance.generateChart(props);
     }
-
-    if (unloadBeforeLoad) {
-      instance.unloadData();
-    }
-
-    instance.loadData(data);
+    instance.loadData({...data, unload: unloadBeforeLoad});
   };
 };
 
