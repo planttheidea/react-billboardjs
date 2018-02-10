@@ -115,7 +115,13 @@ export const ORDER_SHAPE = PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(
 export const DATA_SHAPE = PropTypes.shape({
   axes: PropTypes.object,
   classes: PropTypes.object,
-  color: PropTypes.func,
+  color: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({
+      pattern: PropTypes.arrayOf(PropTypes.string),
+      tiles: PropTypes.func
+    })
+  ]),
   colors: PropTypes.object,
   columns: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))),
   empty: PropTypes.shape({
@@ -140,6 +146,9 @@ export const DATA_SHAPE = PropTypes.shape({
       })
     })
   ]),
+  line: PropTypes.shape({
+    classes: PropTypes.arrayOf(PropTypes.string)
+  }),
   mimeType: PropTypes.string,
   names: PropTypes.object,
   onclick: PropTypes.func,
@@ -150,6 +159,10 @@ export const DATA_SHAPE = PropTypes.shape({
   onselected: PropTypes.func,
   onunselected: PropTypes.func,
   order: ORDER_SHAPE,
+  point: PropTypes.shape({
+    pattern: PropTypes.arrayOf(PropTypes.string),
+    type: PropTypes.oneOf(['circle', 'rectangle'])
+  }),
   regions: PropTypes.object,
   rows: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))),
   selection: PropTypes.shape({
@@ -163,6 +176,7 @@ export const DATA_SHAPE = PropTypes.shape({
     'area-spline',
     'area-step',
     'bar',
+    'bubble',
     'donut',
     'gauge',
     'line',

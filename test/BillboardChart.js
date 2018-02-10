@@ -6,7 +6,7 @@ import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 
 // src
-import * as component from 'src/index';
+import * as component from 'src/BillboardChart';
 import * as bb from 'src/bb';
 
 const BillboardChart = component.default;
@@ -187,6 +187,39 @@ test('if destroyChart will call console.error if there is an error destrorying t
   t.true(consoleStub.calledWith('Internal billboard.js error', error));
 
   consoleStub.restore();
+});
+
+test('if exportChart will call export if the chart exists', (t) => {
+  const instance = {
+    chart: {
+      export: sinon.spy()
+    }
+  };
+
+  const exportChart = component.createExportChart(instance);
+
+  const mimeType = 'mimeType';
+  const callback = () => {};
+
+  exportChart(mimeType, callback);
+
+  t.true(instance.chart.export.calledOnce);
+  t.true(instance.chart.export.calledWith(mimeType, callback));
+});
+
+test('if exportChart will not call export if the chart exists', (t) => {
+  const instance = {
+    chart: null
+  };
+
+  const exportChart = component.createExportChart(instance);
+
+  const mimeType = 'mimeType';
+  const callback = () => {};
+
+  t.notThrows(() => {
+    exportChart(mimeType, callback);
+  });
 });
 
 test('if generateChart will call generate on bb with the config stripped of extra props', (t) => {

@@ -5,11 +5,12 @@
         [
           "env",
           {
-            "loose": true
+            "loose": true,
+            "modules": false
           }
         ],
-        "stage-2",
-        "react"
+        "react",
+        "stage-2"
       ]
     },
     "es": {
@@ -21,11 +22,11 @@
             "modules": false
           }
         ],
-        "stage-2",
-        "react"
+        "react",
+        "stage-2"
       ]
     },
-    "production": {
+    "lib": {
       "presets": [
         [
           "env",
@@ -33,10 +34,23 @@
             "loose": true
           }
         ],
-        "stage-2",
-        "react"
-      ],
-      "plugins": ["transform-react-remove-prop-types"]
+        "react",
+        "stage-2"
+      ]
+    },
+    "production": {
+      "plugins": ["transform-react-remove-prop-types"],
+      "presets": [
+        [
+          "env",
+          {
+            "loose": true,
+            "modules": false
+          }
+        ],
+        "react",
+        "stage-2"
+      ]
     },
     "test": {
       "presets": [
@@ -46,8 +60,8 @@
             "loose": true
           }
         ],
-        "stage-2",
-        "react"
+        "react",
+        "stage-2"
       ]
     }
   }
