@@ -303,11 +303,13 @@ class BillboardChart extends Component {
     const {className, style} = this.props;
 
     return (
+      /* eslint-disable prettier */
       <div
         className={className}
         ref={this.setChartRef}
         style={style}
       />
+      /* eslint-enable */
     );
   }
 }
