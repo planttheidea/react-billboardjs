@@ -6,7 +6,7 @@ import {shallow} from 'enzyme';
 import toJson from 'enzyme-to-json';
 
 // src
-import * as component from 'src/index';
+import * as component from 'src/BillboardChart';
 import * as bb from 'src/bb';
 
 const BillboardChart = component.default;
@@ -189,6 +189,39 @@ test('if destroyChart will call console.error if there is an error destrorying t
   consoleStub.restore();
 });
 
+test('if exportChart will call export if the chart exists', (t) => {
+  const instance = {
+    chart: {
+      export: sinon.spy()
+    }
+  };
+
+  const exportChart = component.createExportChart(instance);
+
+  const mimeType = 'mimeType';
+  const callback = () => {};
+
+  exportChart(mimeType, callback);
+
+  t.true(instance.chart.export.calledOnce);
+  t.true(instance.chart.export.calledWith(mimeType, callback));
+});
+
+test('if exportChart will not call export if the chart exists', (t) => {
+  const instance = {
+    chart: null
+  };
+
+  const exportChart = component.createExportChart(instance);
+
+  const mimeType = 'mimeType';
+  const callback = () => {};
+
+  t.notThrows(() => {
+    exportChart(mimeType, callback);
+  });
+});
+
 test('if generateChart will call generate on bb with the config stripped of extra props', (t) => {
   const instance = {
     chartElement: {
@@ -291,7 +324,6 @@ test('if updateChart will create the chart if it does not exist and then load th
   t.true(instance.generateChart.calledOnce);
   t.is(instance.chart, chart);
 
-
   t.true(instance.loadData.calledOnce);
   t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
 });
@@ -316,7 +348,6 @@ test('if updateChart will not create the chart if it already is populated', (t) 
   updateChart(props);
 
   t.true(instance.generateChart.notCalled);
-
 
   t.true(instance.loadData.calledOnce);
   t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
@@ -343,7 +374,6 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
 
   t.true(instance.generateChart.calledOnce);
   t.is(instance.chart, chart);
-
 
   t.true(instance.loadData.calledOnce);
   t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
