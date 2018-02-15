@@ -3,12 +3,27 @@
   "ava": {
     "babel": "inherit",
     "failFast": true,
-    "files": ["test/*.js"],
-    "require": ["babel-register", "babel-polyfill", "test/helpers/setup-browser-env.js"],
-    "source": ["src/*.js"],
+    "files": [
+      "test/*.js"
+    ],
+    "require": [
+      "babel-register",
+      "babel-polyfill",
+      "test/helpers/setup-browser-env.js"
+    ],
+    "source": [
+      "src/*.js"
+    ],
     "verbose": true
   },
-  "browserslist": ["defaults", "Explorer >= 9", "Safari >= 6", "Opera >= 15", "iOS >= 8", "Android >= 4"],
+  "browserslist": [
+    "defaults",
+    "Explorer >= 9",
+    "Safari >= 6",
+    "Opera >= 15",
+    "iOS >= 8",
+    "Android >= 4"
+  ],
   "bugs": {
     "url": "https://github.com/planttheidea/react-billboardjs/issues"
   },
@@ -50,12 +65,22 @@
     "react-test-renderer": "^16.2.0",
     "rimraf": "^2.6.2",
     "sinon": "^4.2.3",
-    "style-loader": "^0.20.1",
+    "style-loader": "^0.20.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
   },
   "homepage": "https://github.com/planttheidea/react-billboardjs#readme",
-  "keywords": ["react", "react-component", "component", "billboard", "billboard.js", "d3", "chart", "graph", "svg"],
+  "keywords": [
+    "react",
+    "react-component",
+    "component",
+    "billboard",
+    "billboard.js",
+    "d3",
+    "chart",
+    "graph",
+    "svg"
+  ],
   "license": "MIT",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -65,17 +90,14 @@
   "repository": "git@github.com:planttheidea/react-billboardjs.git",
   "scripts": {
     "build": "NODE_ENV=development webpack --progress --colors --config=webpack/webpack.config.js",
-    "build:minified":
-      "NODE_ENV=production BABEL_ENV=es webpack --progress --colors --config=webpack/webpack.config.minified.js",
+    "build:minified": "NODE_ENV=production BABEL_ENV=es webpack --progress --colors --config=webpack/webpack.config.minified.js",
     "clean": "rimraf lib && rimraf es && rimraf dist",
-    "copy:css":
-      "cp node_modules/billboard.js/dist/billboard.css src/billboard.css && cp node_modules/billboard.js/dist/billboard.css.map src/billboard.css.map",
+    "copy:css": "cp node_modules/billboard.js/dist/billboard.css src/billboard.css && cp node_modules/billboard.js/dist/billboard.css.map src/billboard.css.map",
     "dev": "NODE_ENV=development webpack-dev-server --progress --colors --config=webpack/webpack.config.dev.js",
     "lint": "eslint --max-warnings 0 src",
     "lint:fix": "npm run lint -- --fix",
     "prepublish": "if in-publish; then npm run prepublish:compile; fi",
-    "prepublish:compile":
-      "npm run lint:fix && npm run test:coverage && npm run clean && npm run copy:css && npm run transpile:lib && npm run transpile:es && npm run build && npm run build:minified",
+    "prepublish:compile": "npm run lint:fix && npm run test:coverage && npm run clean && npm run copy:css && npm run transpile:lib && npm run transpile:es && npm run build && npm run build:minified",
     "start": "npm run dev",
     "test": "NODE_PATH=. NODE_ENV=test ava",
     "test:coverage": "nyc npm test",

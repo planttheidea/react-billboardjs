@@ -324,7 +324,6 @@ test('if updateChart will create the chart if it does not exist and then load th
   t.true(instance.generateChart.calledOnce);
   t.is(instance.chart, chart);
 
-
   t.true(instance.loadData.calledOnce);
   t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
 });
@@ -349,7 +348,6 @@ test('if updateChart will not create the chart if it already is populated', (t) 
   updateChart(props);
 
   t.true(instance.generateChart.notCalled);
-
 
   t.true(instance.loadData.calledOnce);
   t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
@@ -376,7 +374,6 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
 
   t.true(instance.generateChart.calledOnce);
   t.is(instance.chart, chart);
-
 
   t.true(instance.loadData.calledOnce);
   t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
