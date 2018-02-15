@@ -6,9 +6,10 @@
 
 React component for the billboard.js charting library
 
-*This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modifications for `billboard.js` and enhancements for rendering*
+_This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modifications for `billboard.js` and enhancements for rendering_
 
 ## Table of contents
+
 * [Installation](#installation)
 * [Usage](#usage)
 * [Props](#props)
@@ -17,6 +18,7 @@ React component for the billboard.js charting library
   * [style](#style)
   * [unloadBeforeLoad](#unloadbeforeload)
 * [Managing the internal chart](#managing-the-internal-chart)
+  * [exportChart](#exportchart)
   * [loadData](#loaddata)
   * [redraw](#redraw)
   * [unloadData](#unloaddata)
@@ -49,9 +51,7 @@ const CHART_DATA = {
 
 class LineChart extends Component {
   render() {
-    return (
-      <BillboardChart data={CHART_DATA}/>
-    );
+    return <BillboardChart data={CHART_DATA} />;
   }
 }
 ```
@@ -61,6 +61,7 @@ Make sure to include the provided CSS file to ensure that all appropriate styles
 ## Props
 
 All top-level properties available on the `billboard.js` options are passable as props, so for more detail about each of those props please check [their documentation site](https://naver.github.io/billboard.js/release/latest/doc/). There are also a few additional props specific to the component:
+
 * className `{string}`
 * isPure `{boolean}`
 * style `{Object}`
@@ -142,15 +143,29 @@ class Chart extends PureComponent {
 }
 ```
 
+#### exportChart
+
+Exports the chart using the experimental functionality introduced in `1.2.0` of `billboard.js` (equivalent to the native [export](https://naver.github.io/billboard.js/release/latest/doc/Chart.html#export) method).
+
+```javascript
+this.chartInstance.exportChart('image/png', (dataUrl) => {
+  const link = document.createElement('a');
+
+  link.download = 'chart.png';
+  link.href = dataUrl;
+  link.textContent = 'Download chart as PNG';
+
+  document.body.appendChild(link);
+});
+```
+
 #### loadData
 
 Loads new data into the chart (equivalent to the native [Chart.load](https://naver.github.io/billboard.js/release/latest/doc/Chart.html#load) method).
 
 ```javascript
 this.chartInstance.loadData({
-  columns: [
-    ['data1', 100, 50]
-  ]
+  columns: [['data1', 100, 50]]
 });
 ```
 
@@ -183,6 +198,7 @@ this.chartInstance.chart.defocus('data1');
 ## Development
 
 Standard stuff, clone the repo and `npm install` dependencies. The npm scripts available:
+
 * `build` => run webpack to build development `dist` file with NODE_ENV=development
 * `build:minifed` => run webpack to build production `dist` file with NODE_ENV=production
 * `copy:css` => copy the `billboard.css` file from `billboard.js` package to `src`
