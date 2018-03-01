@@ -223,10 +223,7 @@ export const createUpdateChart = (instance) => {
       instance.chart = instance.generateChart(props);
     }
 
-    instance.loadData({
-      ...data,
-      unload: unloadBeforeLoad
-    });
+    instance.loadData(unloadBeforeLoad ? {...data, unload: true} : data);
   };
 };
 
