@@ -23,6 +23,8 @@ _This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modi
   * [redraw](#redraw)
   * [unloadData](#unloaddata)
   * [Chart instance](#chart-instance)
+* [Managing all charts](#managing-all-charts)
+  * [getInstances](#getinstances)
 * [Development](#development)
 
 ## Installation
@@ -34,19 +36,19 @@ $ npm install react-billboardjs --save
 ## Usage
 
 ```javascript
-import React, {Component} from 'react';
+import React, { Component } from "react";
 
 // component and styles
-import BillboardChart from 'react-billboardjs';
-import 'react-billboardjs/lib/billboard.css';
+import BillboardChart from "react-billboardjs";
+import "react-billboardjs/lib/billboard.css";
 
 const CHART_DATA = {
   columns: [
-    ['data1', 30, 20, 50, 40, 60, 50],
-    ['data2', 200, 130, 90, 240, 130, 220],
-    ['data3', 300, 200, 160, 400, 250, 250]
+    ["data1", 30, 20, 50, 40, 60, 50],
+    ["data2", 200, 130, 90, 240, 130, 220],
+    ["data3", 300, 200, 160, 400, 250, 250]
   ],
-  type: 'line'
+  type: "line"
 };
 
 class LineChart extends Component {
@@ -148,12 +150,12 @@ class Chart extends PureComponent {
 Exports the chart using the experimental functionality introduced in `1.2.0` of `billboard.js` (equivalent to the native [export](https://naver.github.io/billboard.js/release/latest/doc/Chart.html#export) method).
 
 ```javascript
-this.chartInstance.exportChart('image/png', (dataUrl) => {
-  const link = document.createElement('a');
+this.chartInstance.exportChart("image/png", dataUrl => {
+  const link = document.createElement("a");
 
-  link.download = 'chart.png';
+  link.download = "chart.png";
   link.href = dataUrl;
-  link.textContent = 'Download chart as PNG';
+  link.textContent = "Download chart as PNG";
 
   document.body.appendChild(link);
 });
@@ -165,7 +167,7 @@ Loads new data into the chart (equivalent to the native [Chart.load](https://nav
 
 ```javascript
 this.chartInstance.loadData({
-  columns: [['data1', 100, 50]]
+  columns: [["data1", 100, 50]]
 });
 ```
 
@@ -183,7 +185,7 @@ Loads new data into the chart (equivalent to the native [Chart.unload](https://n
 
 ```javascript
 this.chartInstance.unloadData({
-  ids: ['data1']
+  ids: ["data1"]
 });
 ```
 
@@ -192,7 +194,19 @@ this.chartInstance.unloadData({
 If you want to access the native `billboard.js` chart instance, it is available on the `chart` property of the `ref`.
 
 ```javascript
-this.chartInstance.chart.defocus('data1');
+this.chartInstance.chart.defocus("data1");
+```
+
+## Managing all charts
+
+The `BillboardChart` component itself has some static methods that are used to get information about the global `bb` object.
+
+#### getInstances
+
+Get all chart objects for all charts rendered. This aligns with the `bb.instance` property.
+
+```javascript
+console.log(BillboardChart.getInstances()); // [Chart, Chart]
 ```
 
 ## Development

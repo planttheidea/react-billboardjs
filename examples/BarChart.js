@@ -29,6 +29,8 @@ class BarChart extends PureComponent {
       this.element.loadData({
         columns: [['data3', 130, 150, 200, 300, 200, 100]]
       });
+
+      console.log(BillboardChart.getInstances());
     }, 1000);
   }
 

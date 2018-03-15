@@ -1,5 +1,20 @@
 # react-billboardjs CHANGELOG
 
+## 1.3.0
+
+**NEW FEATURES**
+
+* Add support for area-range and area-line-range
+* Add propTypes for `pie.padding`
+* Add propTypes for `pie.innerRadius`
+* Add propTypes for `legend.usePoint`
+* Add propTypes for `axis.x.tick.tooltip`
+* Add [`getInstances`](README.md#getinstances) static method on `BillboardChart` to access the chart objects for all charts rendered
+
+**BUGFIXES**
+
+* Prevent `unloadBeforeLoad` from being passed when false, [due to upstream bug](https://github.com/naver/billboard.js/issues/321)
+
 ## 1.2.0
 
 **NEW FEATURES**

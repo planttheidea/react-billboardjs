@@ -223,11 +223,20 @@ export const createUpdateChart = (instance) => {
       instance.chart = instance.generateChart(props);
     }
 
-    instance.loadData({
-      ...data,
-      unload: unloadBeforeLoad
-    });
+    instance.loadData(unloadBeforeLoad ? {...data, unload: true} : data);
   };
+};
+
+/**
+ * @function getInstances
+ *
+ * @description
+ * get all chart instances created by billboard
+ *
+ * @returns {Array<Object>} the array of chart instances
+ */
+export const getInstances = () => {
+  return bb().instance;
 };
 
 class BillboardChart extends Component {
@@ -297,6 +306,9 @@ class BillboardChart extends Component {
   setChartRef = createAssignElementToRef(this, 'chartElement');
   unloadData = createUnloadData(this);
   updateChart = createUpdateChart(this);
+
+  // global methods
+  static getInstances = getInstances;
 
   render() {
     const {className, style} = this.props;

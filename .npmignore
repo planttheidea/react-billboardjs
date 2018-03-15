@@ -1,4 +1,8 @@
 .idea
+.babelrc
+.eslintrc
+.gitignore
+.npmignore
 .nyc_output
 coverage
 examples
@@ -6,7 +10,4 @@ node_modules
 src
 test
 webpack
-.babelrc
-.eslintrc
-.gitignore
-.npmignore
+*.log
