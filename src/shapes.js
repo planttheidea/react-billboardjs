@@ -63,6 +63,7 @@ export const AXIS_SHAPE = PropTypes.shape({
       multiline: PropTypes.bool,
       outer: PropTypes.bool,
       rotate: PropTypes.number,
+      tooltip: PropTypes.bool,
       values: PropTypes.arrayOf(PropTypes.number),
       width: PropTypes.number
     }),
@@ -123,7 +124,20 @@ export const DATA_SHAPE = PropTypes.shape({
     })
   ]),
   colors: PropTypes.object,
-  columns: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))),
+  columns: PropTypes.arrayOf(
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.number),
+        PropTypes.number,
+        PropTypes.shape({
+          height: PropTypes.number,
+          low: PropTypes.number,
+          mid: PropTypes.number
+        }),
+        PropTypes.string
+      ])
+    )
+  ),
   empty: PropTypes.shape({
     label: LABEL_SHAPE
   }),
@@ -173,6 +187,8 @@ export const DATA_SHAPE = PropTypes.shape({
   }),
   type: PropTypes.oneOf([
     'area',
+    'area-line-range',
+    'area-range',
     'area-spline',
     'area-step',
     'bar',
@@ -293,7 +309,8 @@ export const LEGEND_SHAPE = PropTypes.shape({
   }),
   padding: PropTypes.number,
   position: PropTypes.oneOf(['bottom', 'right', 'inset']),
-  show: PropTypes.bool
+  show: PropTypes.bool,
+  usePoint: PropTypes.bool
 });
 
 export const LINE_SHAPE = PropTypes.shape({
@@ -312,13 +329,15 @@ export const PADDING_SHAPE = PropTypes.shape({
 
 export const PIE_SHAPE = PropTypes.shape({
   expand: PropTypes.bool,
+  innerRadius: PropTypes.number,
   label: PropTypes.shape({
     format: PropTypes.func,
     ratio: PropTypes.number,
     show: PropTypes.bool,
     threshold: PropTypes.number
   }),
-  padAngle: PropTypes.number
+  padAngle: PropTypes.number,
+  padding: PropTypes.number
 });
 
 export const POINT_SHAPE = PropTypes.shape({

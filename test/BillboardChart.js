@@ -222,7 +222,7 @@ test('if exportChart will not call export if the chart exists', (t) => {
   });
 });
 
-test('if generateChart will call generate on bb with the config stripped of extra props', (t) => {
+test.serial('if generateChart will call generate on bb with the config stripped of extra props', (t) => {
   const instance = {
     chartElement: {
       chart: 'element'
@@ -325,7 +325,7 @@ test('if updateChart will create the chart if it does not exist and then load th
   t.is(instance.chart, chart);
 
   t.true(instance.loadData.calledOnce);
-  t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
+  t.true(instance.loadData.calledWith(props.data));
 });
 
 test('if updateChart will not create the chart if it already is populated', (t) => {
@@ -350,7 +350,7 @@ test('if updateChart will not create the chart if it already is populated', (t) 
   t.true(instance.generateChart.notCalled);
 
   t.true(instance.loadData.calledOnce);
-  t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
+  t.true(instance.loadData.calledWith(props.data));
 });
 
 test('if updateChart will unload the data if unloadBeforeLoad is set to true', (t) => {
@@ -459,6 +459,20 @@ test.serial('if BillboardChart renders correctly with a custom style object', as
   await nextFrame();
 
   t.true(stub.calledOnce);
+
+  stub.restore();
+});
+
+test.serial('if BillboardChart has a static method that returns the array of instances from the bb object', (t) => {
+  const instance = ['foo', 'bar'];
+
+  const stub = sinon.stub(bb, 'default').returns({
+    instance
+  });
+
+  const result = BillboardChart.getInstances();
+
+  t.is(result, instance);
 
   stub.restore();
 });
