@@ -98,6 +98,7 @@ export const AXIS_SHAPE = PropTypes.shape({
 });
 
 export const BAR_SHAPE = PropTypes.shape({
+  padding: PropTypes.number,
   width: PropTypes.number,
   zerobased: PropTypes.bool
 });
@@ -402,6 +403,7 @@ export const TOOLTIP_SHAPE = PropTypes.shape({
     value: PropTypes.func
   }),
   grouped: PropTypes.bool,
+  linked: PropTypes.bool,
   order: ORDER_SHAPE,
   position: PropTypes.func,
   show: PropTypes.bool

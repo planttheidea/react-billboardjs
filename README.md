@@ -14,6 +14,7 @@ _This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modi
 * [Usage](#usage)
 * [Props](#props)
   * [className](#classname)
+  * [domProps](#domprops)
   * [isPure](#ispure)
   * [style](#style)
   * [unloadBeforeLoad](#unloadbeforeload)
@@ -76,6 +77,17 @@ An additional `className` that is passed to the element that the chart is render
 ```javascript
 <BillboardChart
   className="fancy"
+  ...
+/>
+```
+
+#### domProps
+
+Any additional props that you want passed to the element that the chart is rendered into.
+
+```javascript
+<BillboardChart
+  domProps={{'data-type': 'chart'}}
   ...
 />
 ```
