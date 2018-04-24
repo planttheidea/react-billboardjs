@@ -111,7 +111,7 @@ export const COLOR_SHAPE = PropTypes.shape({
   })
 });
 
-export const ORDER_SHAPE = PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['asc', 'desc', null])]);
+export const ORDER_SHAPE = PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['asc', 'desc', '', null])]);
 
 export const DATA_SHAPE = PropTypes.shape({
   axes: PropTypes.object,
