@@ -8,7 +8,7 @@ import * as bb from 'src/bb';
 let requireCount = 0;
 
 test.after('cleanup mocks', () => {
-  mockRequire.stop();
+  mockRequire.stop('billboard.js');
 });
 
 test.serial('if getBb will call require to get billboard.js when it does not currently exist', (t) => {

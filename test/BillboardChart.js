@@ -11,11 +11,10 @@ import * as bb from 'src/bb';
 
 const BillboardChart = component.default;
 
-const nextFrame = () => {
-  return new Promise((resolve) => {
+const nextFrame = () =>
+  new Promise((resolve) => {
     setTimeout(resolve, 1000 / 60 + 50);
   });
-};
 
 test('if componentDidMount will fire updateChart with props on the first frame after render', async (t) => {
   const instance = {
@@ -23,9 +22,7 @@ test('if componentDidMount will fire updateChart with props on the first frame a
     updateChart: sinon.spy()
   };
 
-  const componentDidMount = component.createComponentDidMount(instance);
-
-  componentDidMount();
+  component.componentDidMount(instance);
 
   await nextFrame();
 
@@ -41,13 +38,11 @@ test('if shouldComponentUpdate will return true if not pure', (t) => {
     }
   };
 
-  const shouldComponentUpdate = component.createShouldComponentUpdate(instance);
-
   const nextProps = {...instance.props};
   const nextState = null;
   const nextContext = {};
 
-  const result = shouldComponentUpdate(nextProps, nextState, nextContext);
+  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
 
   t.true(result);
 });
@@ -60,13 +55,11 @@ test('if shouldComponentUpdate will return true if pure and props are not equal'
     }
   };
 
-  const shouldComponentUpdate = component.createShouldComponentUpdate(instance);
-
   const nextProps = {...instance.props, className: 'foo'};
   const nextState = null;
   const nextContext = {};
 
-  const result = shouldComponentUpdate(nextProps, nextState, nextContext);
+  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
 
   t.true(result);
 });
@@ -79,13 +72,11 @@ test('if shouldComponentUpdate will return true if pure and context is not equal
     }
   };
 
-  const shouldComponentUpdate = component.createShouldComponentUpdate(instance);
-
   const nextProps = {...instance.props};
   const nextState = null;
   const nextContext = {apiKey: 'apiKey'};
 
-  const result = shouldComponentUpdate(nextProps, nextState, nextContext);
+  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
 
   t.true(result);
 });
@@ -98,13 +89,11 @@ test('if shouldComponentUpdate will return false if pure and props / context are
     }
   };
 
-  const shouldComponentUpdate = component.createShouldComponentUpdate(instance);
-
   const nextProps = {...instance.props};
   const nextState = null;
   const nextContext = {...instance.context};
 
-  const result = shouldComponentUpdate(nextProps, nextState, nextContext);
+  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
 
   t.false(result);
 });
@@ -114,11 +103,9 @@ test('if componentWillUpdate will update the chart with nextProps', (t) => {
     updateChart: sinon.spy()
   };
 
-  const componentWillUpdate = component.createComponentWillUpdate(instance);
-
   const nextProps = {};
 
-  componentWillUpdate(nextProps);
+  component.componentWillUpdate(instance, [nextProps]);
 
   t.true(instance.updateChart.calledOnce);
   t.true(instance.updateChart.calledWith(nextProps));
@@ -129,24 +116,9 @@ test('if componentWillUnmount will call destroyChart', (t) => {
     destroyChart: sinon.spy()
   };
 
-  const componentWillUnmount = component.createComponentWillUnmount(instance);
-
-  componentWillUnmount();
+  component.componentWillUnmount(instance);
 
   t.true(instance.destroyChart.calledOnce);
-});
-
-test('if assignElementToRef will assign the element passed to the refName', (t) => {
-  const instance = {};
-  const refName = 'refName';
-
-  const assignElementToRef = component.createAssignElementToRef(instance, refName);
-
-  const element = {};
-
-  assignElementToRef(element);
-
-  t.is(instance[refName], element);
 });
 
 test('if destroyChart will call destroy on the chart and set it to null when successful', (t) => {
@@ -158,9 +130,7 @@ test('if destroyChart will call destroy on the chart and set it to null when suc
     }
   };
 
-  const destroyChart = component.createDestroyChart(instance);
-
-  destroyChart();
+  component.destroyChart(instance);
 
   t.true(destroy.calledOnce);
   t.is(instance.chart, null);
@@ -175,11 +145,9 @@ test('if destroyChart will call console.error if there is an error destrorying t
     }
   };
 
-  const destroyChart = component.createDestroyChart(instance);
-
   const consoleStub = sinon.stub(console, 'error');
 
-  destroyChart();
+  component.destroyChart(instance);
 
   t.true(instance.chart.destroy.calledOnce);
 
@@ -196,12 +164,10 @@ test('if exportChart will call export if the chart exists', (t) => {
     }
   };
 
-  const exportChart = component.createExportChart(instance);
-
   const mimeType = 'mimeType';
   const callback = () => {};
 
-  exportChart(mimeType, callback);
+  component.exportChart(instance, [mimeType, callback]);
 
   t.true(instance.chart.export.calledOnce);
   t.true(instance.chart.export.calledWith(mimeType, callback));
@@ -212,13 +178,11 @@ test('if exportChart will not call export if the chart exists', (t) => {
     chart: null
   };
 
-  const exportChart = component.createExportChart(instance);
-
   const mimeType = 'mimeType';
   const callback = () => {};
 
   t.notThrows(() => {
-    exportChart(mimeType, callback);
+    component.exportChart(instance, [mimeType, callback]);
   });
 });
 
@@ -236,15 +200,13 @@ test.serial('if generateChart will call generate on bb with the config stripped 
     }
   };
 
-  const generateChart = component.createGenerateChart(instance);
-
   const fakeBb = {
     generate: sinon.spy()
   };
 
   const bbStub = sinon.stub(bb, 'default').returns(fakeBb);
 
-  generateChart();
+  component.generateChart(instance);
 
   t.true(bbStub.calledOnce);
 
@@ -261,11 +223,9 @@ test('if loadData will call load on the instance chart', (t) => {
     }
   };
 
-  const loadData = component.createLoadData(instance);
-
   const data = {};
 
-  loadData(data);
+  component.loadData(instance, [data]);
 
   t.true(instance.chart.load.calledOnce);
   t.true(instance.chart.load.calledWith(data));
@@ -278,9 +238,7 @@ test('if redrawChart will trigger flush on the chart', (t) => {
     }
   };
 
-  const redraw = component.createRedraw(instance);
-
-  redraw();
+  component.redraw(instance);
 
   t.true(instance.chart.flush.calledOnce);
 });
@@ -292,11 +250,9 @@ test('if unloadData will call unload on the instance chart', (t) => {
     }
   };
 
-  const unloadData = component.createUnloadData(instance);
-
   const data = {};
 
-  unloadData(data);
+  component.unloadData(instance, [data]);
 
   t.true(instance.chart.unload.calledOnce);
   t.true(instance.chart.unload.calledWith(data));
@@ -312,14 +268,12 @@ test('if updateChart will create the chart if it does not exist and then load th
     unloadData: sinon.spy()
   };
 
-  const updateChart = component.createUpdateChart(instance);
-
   const props = {
     data: {},
     unloadBeforeLoad: false
   };
 
-  updateChart(props);
+  component.updateChart(instance, [props]);
 
   t.true(instance.generateChart.calledOnce);
   t.is(instance.chart, chart);
@@ -338,14 +292,12 @@ test('if updateChart will not create the chart if it already is populated', (t) 
     unloadData: sinon.spy()
   };
 
-  const updateChart = component.createUpdateChart(instance);
-
   const props = {
     data: {},
     unloadBeforeLoad: false
   };
 
-  updateChart(props);
+  component.updateChart(instance, [props]);
 
   t.true(instance.generateChart.notCalled);
 
@@ -363,14 +315,12 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
     unloadData: sinon.spy()
   };
 
-  const updateChart = component.createUpdateChart(instance);
-
   const props = {
     data: {},
     unloadBeforeLoad: true
   };
 
-  updateChart(props);
+  component.updateChart(instance, [props]);
 
   t.true(instance.generateChart.calledOnce);
   t.is(instance.chart, chart);
@@ -380,7 +330,9 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
 });
 
 test.serial('if BillboardChart renders correctly with default props', async (t) => {
-  const props = {};
+  const props = {
+    data: {}
+  };
 
   const chart = {
     load: sinon.spy()
@@ -407,7 +359,8 @@ test.serial('if BillboardChart renders correctly with default props', async (t) 
 
 test.serial('if BillboardChart renders correctly with a custom className', async (t) => {
   const props = {
-    className: 'className'
+    className: 'className',
+    data: {}
   };
 
   const chart = {
@@ -435,8 +388,40 @@ test.serial('if BillboardChart renders correctly with a custom className', async
 
 test.serial('if BillboardChart renders correctly with a custom style object', async (t) => {
   const props = {
+    data: {},
     style: {
       display: 'inline-block'
+    }
+  };
+
+  const chart = {
+    load: sinon.spy()
+  };
+
+  const bbStub = {
+    generate() {
+      return chart;
+    }
+  };
+
+  const stub = sinon.stub(bb, 'default').returns(bbStub);
+
+  const wrapper = shallow(<BillboardChart {...props} />);
+
+  t.snapshot(toJson(wrapper));
+
+  await nextFrame();
+
+  t.true(stub.calledOnce);
+
+  stub.restore();
+});
+
+test.serial('if BillboardChart renders correctly with custom domProps passed', async (t) => {
+  const props = {
+    data: {},
+    domProps: {
+      'data-foo': 'bar'
     }
   };
 

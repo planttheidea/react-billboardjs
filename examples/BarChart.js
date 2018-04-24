@@ -21,6 +21,10 @@ const CHART_AXIS = {
   }
 };
 
+const DOM_PROPS = {
+  'data-type': 'bar'
+};
+
 class BarChart extends PureComponent {
   static displayName = 'BarChart';
 
@@ -49,6 +53,7 @@ class BarChart extends PureComponent {
         axis={CHART_AXIS}
         className="bar"
         data={CHART_DATA}
+        domProps={DOM_PROPS}
         ref={this.getRef}
       />
       /* eslint-enable prettier*/

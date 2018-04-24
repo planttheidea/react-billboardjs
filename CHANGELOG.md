@@ -1,5 +1,17 @@
 # react-billboardjs CHANGELOG
 
+## 1.4.0
+
+**NEW FEATURES**
+
+* Add [`domProps`](README.md#domprops) prop for passing additional properties to the DOM element
+* Add propTypes for `bar.padding`
+* Add propTypes for `tooltip.linked`
+
+**BUGFIXES**
+
+* Include empty string as valid value for `tooltip.order`
+
 ## 1.3.0
 
 **NEW FEATURES**

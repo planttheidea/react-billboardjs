@@ -1,7 +1,8 @@
 // external dependencies
 import shallowEqual from 'fbjs/lib/shallowEqual';
-import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import {createComponent, createElementRef} from 'react-parm';
 
 // billboard
 import bb from './bb';
@@ -34,198 +35,116 @@ import {
   ZOOM_SHAPE
 } from './shapes';
 
-export const createComponentDidMount = (instance) => {
-  /**
-   * @function componentDidMount
-   *
-   * @description
-   * on mount, update the chart based on props
-   */
-  return () => {
-    requestAnimationFrame(() => {
-      instance.updateChart(instance.props);
-    });
-  };
+/** 
+ * @function componentDidMount 
+ * 
+ * @description 
+ * on mount, update the chart based on props 
+ +
+ * @param {Object} props the props passed to the component
+ * @param {function} updateChart the method to update the chart
+ * @returns {void}
+ */
+export const componentDidMount = ({props, updateChart}) =>
+  requestAnimationFrame(() => {
+    updateChart(props);
+  });
+
+/**
+ * @function shouldComponentUpdate
+ *
+ * @description
+ * if the component is pure, base the update on whether props and context have changed
+ *
+ * @param {Object} context the instance context
+ * @param {Object} props the instance props
+ * @param {Object} nextProps the next props
+ * @param {Object} nextStateIgnored the next state
+ * @param {Object} nextContext the next context
+ * @returns {boolean} should the component update
+ */
+
+export const shouldComponentUpdate = ({context, props}, [nextProps, , nextContext]) =>
+  nextProps.isPure ? !shallowEqual(props, nextProps) || !shallowEqual(context, nextContext) : true;
+
+/**
+ * @function componentWillUpdate
+ *
+ * @description
+ * when the component will update, update the chart with the new props
+ *
+ * @param {function} updateChart the method to update the chart
+ * @param {Object} nextProps the next props
+ * @returns {void}
+ */
+export const componentWillUpdate = ({updateChart}, [nextProps]) => updateChart(nextProps);
+
+/**
+ * @function componentWillUnmount
+ *
+ * @description
+ * prior to unmount, destroy the chart
+ *
+ * @param {function} destroyChart the method to destroy the chart
+ * @returns {void}
+ */
+export const componentWillUnmount = ({destroyChart}) => destroyChart();
+
+/**
+ * @function destroyChart
+ *
+ * @description
+ * destroy the chart and set the ref to null
+ *
+ * @param {ReactComponent} instance the component instance
+ */
+export const destroyChart = (instance) => {
+  try {
+    instance.chart.destroy();
+
+    instance.chart = null;
+  } catch (error) {
+    console.error('Internal billboard.js error', error); // eslint-disable-line no-console
+  }
 };
 
-export const createShouldComponentUpdate = (instance) => {
-  /**
-   * @function shouldComponentUpdate
-   *
-   * @description
-   * if the component is pure, base the update on whether props and context have changed
-   *
-   * @param {Object} nextProps the next props
-   * @param {Object} nextState the next state
-   * @param {Object} nextContext the next context
-   * @returns {boolean} should the component update
-   */
-  return (nextProps, nextState, nextContext) => {
-    const {isPure} = nextProps;
+/**
+ * @function exportChart
+ *
+ * @description
+ * export the chart if it exists
+ *
+ * @param {BB} chart the chart instance
+ * @param {string} mimeType the mimetype of the image
+ * @param {function} callback the callback with the data URL
+ * @returns {void}
+ */
+export const exportChart = ({chart}, [mimeType, callback]) => chart && chart.export(mimeType, callback);
 
-    return isPure ? !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.context, nextContext) : true;
-  };
-};
-
-export const createComponentWillUpdate = (instance) => {
-  /**
-   * @function componentWillUpdate
-   *
-   * @description
-   * when the component will update, update the chart with the new props
-   *
-   * @param {Object} nextProps the next props
-   */
-  return (nextProps) => {
-    instance.updateChart(nextProps);
-  };
-};
-
-export const createComponentWillUnmount = (instance) => {
-  /**
-   * @function componentWillUnmount
-   *
-   * @description
-   * prior to unmount, destroy the chart
-   */
-  return () => {
-    instance.destroyChart();
-  };
-};
-
-export const createAssignElementToRef = (instance, refName) => {
-  /**
-   * @function assignElementToRef
-   *
-   * @description
-   * set the element DOM node to the refName passed
-   *
-   * @param {HTMLElement} element the element to assign to the ref
-   */
-  return (element) => {
-    instance[refName] = element;
-  };
-};
-
-export const createDestroyChart = (instance) => {
-  /**
-   * @function destroyChart
-   *
-   * @description
-   * destroy the chart and set the ref to null
-   */
-  return () => {
-    try {
-      instance.chart.destroy();
-
-      instance.chart = null;
-    } catch (error) {
-      console.error('Internal billboard.js error', error); // eslint-disable-line no-console
-    }
-  };
-};
-
-export const createExportChart = (instance) => {
-  /**
-   * @function exportChart
-   *
-   * @description
-   * export the chart if it exists
-   *
-   * @param {string} mimeType the mimetype of the image
-   * @param {function} callback the callback with the data URL
-   */
-  return (mimeType, callback) => {
-    if (instance.chart) {
-      instance.chart.export(mimeType, callback);
-    }
-  };
-};
-
-export const createGenerateChart = (instance) => {
-  /**
-   * @function generateChart
-   *
-   * @description
-   * generate the chart based on the props passed
-   *
-   * @returns {Object} the chart instance that was generated
-   */
-  return () => {
-    const {
-      className: classNameIgnored,
-      isPure: isPureIgnored,
-      style: styleIgnored,
-      unloadBeforeLoad: unloadBeforeLoadIgnored,
-      ...config
-    } = instance.props;
-
-    return bb().generate({
-      bindto: instance.chartElement,
-      ...config
-    });
-  };
-};
-
-export const createLoadData = (instance) => {
-  /**
-   * @function loadData
-   *
-   * @description
-   * load new data to the existing chart
-   *
-   * @param {Object} data the data to load
-   */
-  return (data) => {
-    instance.chart.load(data);
-  };
-};
-
-export const createRedraw = (instance) => {
-  /**
-   * @function redraw
-   *
-   * @description
-   * trigger a redraw of the chart
-   */
-  return () => {
-    instance.chart.flush();
-  };
-};
-
-export const createUnloadData = (instance) => {
-  /**
-   * @function unloadData
-   *
-   * @description
-   * unload data from the existing chart
-   *
-   * @param {Object} data the data to unload
-   */
-  return (data) => {
-    instance.chart.unload(data);
-  };
-};
-
-export const createUpdateChart = (instance) => {
-  /**
-   * @function updateChart
-   *
-   * @description
-   * update the chart with the new data
-   *
-   * @param {Object} props the props to update the chart with
-   */
-  return (props) => {
-    const {data, unloadBeforeLoad} = props;
-
-    if (!instance.chart) {
-      instance.chart = instance.generateChart(props);
-    }
-
-    instance.loadData(unloadBeforeLoad ? {...data, unload: true} : data);
-  };
-};
+/**
+ * @function generateChart
+ *
+ * @description
+ * generate the chart based on the props passed
+ *
+ * @param {HTMLElement} chartElement the element to bind the chart to
+ * @param {Object} props the props passed to the instance
+ * @returns {Object} the chart instance that was generated
+ */
+export const generateChart = ({
+  chartElement,
+  props: {
+    className: classNameIgnored,
+    isPure: isPureIgnored,
+    style: styleIgnored,
+    unloadBeforeLoad: unloadBeforeLoadIgnored,
+    ...config
+  }
+}) =>
+  bb().generate({
+    bindto: chartElement,
+    ...config
+  });
 
 /**
  * @function getInstances
@@ -235,94 +154,135 @@ export const createUpdateChart = (instance) => {
  *
  * @returns {Array<Object>} the array of chart instances
  */
-export const getInstances = () => {
-  return bb().instance;
+export const getInstances = () => bb().instance;
+
+/**
+ * @function loadData
+ *
+ * @description
+ * load new data to the existing chart
+ *
+ * @param {BB} chart the chart instance
+ * @param {Object} data the data to load
+ * @returns {void}
+ */
+export const loadData = ({chart}, [data]) => chart.load(data);
+
+/**
+ * @function redraw
+ *
+ * @description
+ * trigger a redraw of the chart
+ *
+ * @returns {void}
+ */
+export const redraw = ({chart}) => chart.flush();
+
+/**
+ * @function unloadData
+ *
+ * @description
+ * unload data from the existing chart
+ *
+ * @param {BB} chart the chart instance
+ * @param {Object} data the data to unload
+ * @returns {void}
+ */
+export const unloadData = ({chart}, [data]) => chart.unload(data);
+
+/**
+ * @function updateChart
+ *
+ * @description
+ * update the chart with the new data
+ *
+ * @param {ReactComponent} instance the component instance
+ * @param {Object} props the props to update the chart with
+ */
+export const updateChart = (instance, [props]) => {
+  const {data, unloadBeforeLoad} = props;
+
+  if (!instance.chart) {
+    instance.chart = instance.generateChart(props);
+  }
+
+  instance.loadData(unloadBeforeLoad ? {...data, unload: true} : data);
 };
 
-class BillboardChart extends Component {
-  static displayName = 'BillboardChart';
+const BillboardChart = ({className, domProps, style}, instance) => (
+  <div
+    className={className}
+    style={style}
+    {...domProps}
+    ref={createElementRef(instance, 'chartElement')}
+  />
+);
 
-  static propTypes = {
-    area: AREA_SHAPE,
-    axis: AXIS_SHAPE,
-    bar: BAR_SHAPE,
-    className: PropTypes.string,
-    clipPath: PropTypes.bool,
-    color: COLOR_SHAPE,
-    data: DATA_SHAPE.isRequired,
-    donut: DONUT_SHAPE,
-    gauge: GAUGE_SHAPE,
-    grid: GRID_SHAPE,
-    interaction: INTERACTION_SHAPE,
-    isPure: PropTypes.bool,
-    legend: LEGEND_SHAPE,
-    line: LINE_SHAPE,
-    onafterinit: PropTypes.func,
-    onbeforeinit: PropTypes.func,
-    oninit: PropTypes.func,
-    onmouseout: PropTypes.func,
-    onmouseover: PropTypes.func,
-    onrendered: PropTypes.func,
-    onresize: PropTypes.func,
-    onresized: PropTypes.func,
-    padding: PADDING_SHAPE,
-    pie: PIE_SHAPE,
-    point: POINT_SHAPE,
-    regions: PropTypes.arrayOf(REGION_SHAPE),
-    resize: RESIZE_SHAPE,
-    size: SIZE_SHAPE,
-    spline: SPLINE_SHAPE,
-    style: PropTypes.object,
-    subchart: SUBCHART_SHAPE,
-    svg: SVG_SHAPE,
-    title: TITLE_SHAPE,
-    tooltip: TOOLTIP_SHAPE,
-    transition: TRANSITION_SHAPE,
-    unloadBeforeLoad: PropTypes.bool,
-    zoom: ZOOM_SHAPE
-  };
+BillboardChart.displayName = 'BillboardChart';
 
-  static defaultProps = {
-    isPure: false,
-    unloadBeforeLoad: false
-  };
+BillboardChart.propTypes = {
+  area: AREA_SHAPE,
+  axis: AXIS_SHAPE,
+  bar: BAR_SHAPE,
+  className: PropTypes.string,
+  clipPath: PropTypes.bool,
+  color: COLOR_SHAPE,
+  data: DATA_SHAPE.isRequired,
+  domProps: PropTypes.object,
+  donut: DONUT_SHAPE,
+  gauge: GAUGE_SHAPE,
+  grid: GRID_SHAPE,
+  interaction: INTERACTION_SHAPE,
+  isPure: PropTypes.bool,
+  legend: LEGEND_SHAPE,
+  line: LINE_SHAPE,
+  onafterinit: PropTypes.func,
+  onbeforeinit: PropTypes.func,
+  oninit: PropTypes.func,
+  onmouseout: PropTypes.func,
+  onmouseover: PropTypes.func,
+  onrendered: PropTypes.func,
+  onresize: PropTypes.func,
+  onresized: PropTypes.func,
+  padding: PADDING_SHAPE,
+  pie: PIE_SHAPE,
+  point: POINT_SHAPE,
+  regions: PropTypes.arrayOf(REGION_SHAPE),
+  resize: RESIZE_SHAPE,
+  size: SIZE_SHAPE,
+  spline: SPLINE_SHAPE,
+  style: PropTypes.object,
+  subchart: SUBCHART_SHAPE,
+  svg: SVG_SHAPE,
+  title: TITLE_SHAPE,
+  tooltip: TOOLTIP_SHAPE,
+  transition: TRANSITION_SHAPE,
+  unloadBeforeLoad: PropTypes.bool,
+  zoom: ZOOM_SHAPE
+};
 
+BillboardChart.defaultProps = {
+  isPure: false,
+  unloadBeforeLoad: false
+};
+
+BillboardChart.getInstances = getInstances;
+
+export default createComponent(BillboardChart, {
   // lifecycle methods
-  componentDidMount = createComponentDidMount(this);
-  shouldComponentUpdate = createShouldComponentUpdate(this);
-  componentWillUpdate = createComponentWillUpdate(this);
-  componentWillUnmount = createComponentWillUnmount(this);
-
+  componentDidMount,
+  shouldComponentUpdate,
+  componentWillUpdate,
+  componentWillUnmount,
   // instance values
-  chart = null;
-  chartElement = null;
-
+  chart: null,
+  chartElement: null,
   // instance methods
-  destroyChart = createDestroyChart(this);
-  exportChart = createExportChart(this);
-  generateChart = createGenerateChart(this);
-  loadData = createLoadData(this);
-  redraw = createRedraw(this);
-  setChartRef = createAssignElementToRef(this, 'chartElement');
-  unloadData = createUnloadData(this);
-  updateChart = createUpdateChart(this);
-
-  // global methods
-  static getInstances = getInstances;
-
-  render() {
-    const {className, style} = this.props;
-
-    return (
-      /* eslint-disable prettier */
-      <div
-        className={className}
-        ref={this.setChartRef}
-        style={style}
-      />
-      /* eslint-enable */
-    );
-  }
-}
-
-export default BillboardChart;
+  destroyChart,
+  exportChart,
+  generateChart,
+  loadData,
+  redraw,
+  unloadData,
+  updateChart
+});
