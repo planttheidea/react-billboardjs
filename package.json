@@ -37,7 +37,7 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",

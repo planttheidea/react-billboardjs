@@ -136,12 +136,14 @@ test('if destroyChart will call destroy on the chart and set it to null when suc
   t.is(instance.chart, null);
 });
 
-test('if destroyChart will call console.error if there is an error destrorying the chart', (t) => {
+test('if destroyChart will call console.error if there is an error destroying the chart', (t) => {
   const error = new Error('boom');
+
+  const destroy = sinon.stub().throws(error);
 
   const instance = {
     chart: {
-      destroy: sinon.stub().throws(error)
+      destroy
     }
   };
 
@@ -149,10 +151,26 @@ test('if destroyChart will call console.error if there is an error destrorying t
 
   component.destroyChart(instance);
 
-  t.true(instance.chart.destroy.calledOnce);
+  t.true(destroy.calledOnce);
 
   t.true(consoleStub.calledOnce);
   t.true(consoleStub.calledWith('Internal billboard.js error', error));
+
+  consoleStub.restore();
+});
+
+test('if destroyChart will do nothing if there is no chart', (t) => {
+  const error = new Error('boom');
+
+  const instance = {};
+
+  const consoleStub = sinon.stub(console, 'error');
+
+  component.destroyChart(instance);
+
+  t.true(consoleStub.notCalled);
+
+  t.is(instance.chart, null);
 
   consoleStub.restore();
 });
@@ -173,7 +191,7 @@ test('if exportChart will call export if the chart exists', (t) => {
   t.true(instance.chart.export.calledWith(mimeType, callback));
 });
 
-test('if exportChart will not call export if the chart exists', (t) => {
+test('if exportChart will not call export if the chart does not exist', (t) => {
   const instance = {
     chart: null
   };
@@ -216,6 +234,22 @@ test.serial('if generateChart will call generate on bb with the config stripped 
   bbStub.restore();
 });
 
+test('if loadData will do nothing if the chart does not exist', (t) => {
+  const instance = {
+    chart: null
+  };
+
+  const data = {};
+
+  try {
+    component.loadData(instance, [data]);
+
+    t.pass();
+  } catch (error) {
+    t.fail(error);
+  }
+});
+
 test('if loadData will call load on the instance chart', (t) => {
   const instance = {
     chart: {
@@ -231,7 +265,21 @@ test('if loadData will call load on the instance chart', (t) => {
   t.true(instance.chart.load.calledWith(data));
 });
 
-test('if redrawChart will trigger flush on the chart', (t) => {
+test('if redraw will do nothing if the chart does not exist', (t) => {
+  const instance = {
+    chart: null
+  };
+
+  try {
+    component.redraw(instance);
+
+    t.pass();
+  } catch (error) {
+    t.fail(error);
+  }
+});
+
+test('if redraw will trigger flush on the chart', (t) => {
   const instance = {
     chart: {
       flush: sinon.spy()
@@ -241,6 +289,22 @@ test('if redrawChart will trigger flush on the chart', (t) => {
   component.redraw(instance);
 
   t.true(instance.chart.flush.calledOnce);
+});
+
+test('if unloadData will do nothing if the chart does not exist', (t) => {
+  const instance = {
+    chart: null
+  };
+
+  const data = {};
+
+  try {
+    component.unloadData(instance, [data]);
+
+    t.pass();
+  } catch (error) {
+    t.fail(error);
+  }
 });
 
 test('if unloadData will call unload on the instance chart', (t) => {
