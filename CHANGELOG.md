@@ -1,5 +1,11 @@
 # react-billboardjs CHANGELOG
 
+## 1.4.1
+
+**BUGFIXES**
+
+* Add more runtime safety (ensure `chart` exists before executing functions on it, for edge cases where `chart` is `null`)
+
 ## 1.4.0
 
 **NEW FEATURES**

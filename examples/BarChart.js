@@ -28,13 +28,26 @@ const DOM_PROPS = {
 class BarChart extends PureComponent {
   static displayName = 'BarChart';
 
+  state = {
+    data: null
+  };
+
   componentDidMount() {
     setTimeout(() => {
-      this.element.loadData({
-        columns: [['data3', 130, 150, 200, 300, 200, 100]]
-      });
+      this.setState(
+        () => ({
+          data: CHART_DATA
+        }),
+        () => {
+          setTimeout(() => {
+            this.element.loadData({
+              columns: [['data3', 130, 150, 200, 300, 200, 100]]
+            });
 
-      console.log(BillboardChart.getInstances());
+            console.log(BillboardChart.getInstances());
+          }, 1000);
+        }
+      );
     }, 1000);
   }
 
@@ -47,12 +60,18 @@ class BarChart extends PureComponent {
   };
 
   render() {
+    const {data} = this.state;
+
+    if (!data) {
+      return <p>Loading...</p>;
+    }
+
     return (
       /* eslint-disable prettier */
       <BillboardChart
         axis={CHART_AXIS}
         className="bar"
-        data={CHART_DATA}
+        data={data}
         domProps={DOM_PROPS}
         ref={this.getRef}
       />

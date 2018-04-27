@@ -45,10 +45,7 @@ import {
  * @param {function} updateChart the method to update the chart
  * @returns {void}
  */
-export const componentDidMount = ({props, updateChart}) =>
-  requestAnimationFrame(() => {
-    updateChart(props);
-  });
+export const componentDidMount = ({props, updateChart}) => requestAnimationFrame(() => updateChart(props));
 
 /**
  * @function shouldComponentUpdate
@@ -99,13 +96,16 @@ export const componentWillUnmount = ({destroyChart}) => destroyChart();
  * @param {ReactComponent} instance the component instance
  */
 export const destroyChart = (instance) => {
-  try {
-    instance.chart.destroy();
-
-    instance.chart = null;
-  } catch (error) {
-    console.error('Internal billboard.js error', error); // eslint-disable-line no-console
+  if (instance.chart) {
+    try {
+      instance.chart.destroy();
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Internal billboard.js error', error);
+    }
   }
+
+  instance.chart = null;
 };
 
 /**
@@ -166,7 +166,7 @@ export const getInstances = () => bb().instance;
  * @param {Object} data the data to load
  * @returns {void}
  */
-export const loadData = ({chart}, [data]) => chart.load(data);
+export const loadData = ({chart}, [data]) => chart && chart.load(data);
 
 /**
  * @function redraw
@@ -176,7 +176,7 @@ export const loadData = ({chart}, [data]) => chart.load(data);
  *
  * @returns {void}
  */
-export const redraw = ({chart}) => chart.flush();
+export const redraw = ({chart}) => chart && chart.flush();
 
 /**
  * @function unloadData
@@ -188,7 +188,7 @@ export const redraw = ({chart}) => chart.flush();
  * @param {Object} data the data to unload
  * @returns {void}
  */
-export const unloadData = ({chart}, [data]) => chart.unload(data);
+export const unloadData = ({chart}, [data]) => chart && chart.unload(data);
 
 /**
  * @function updateChart
@@ -200,13 +200,14 @@ export const unloadData = ({chart}, [data]) => chart.unload(data);
  * @param {Object} props the props to update the chart with
  */
 export const updateChart = (instance, [props]) => {
+  const {generateChart, loadData} = instance;
   const {data, unloadBeforeLoad} = props;
 
   if (!instance.chart) {
-    instance.chart = instance.generateChart(props);
+    instance.chart = generateChart(props);
   }
 
-  instance.loadData(unloadBeforeLoad ? {...data, unload: true} : data);
+  loadData(unloadBeforeLoad ? {...data, unload: true} : data);
 };
 
 const BillboardChart = ({className, domProps, style}, instance) => (
