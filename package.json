@@ -108,5 +108,5 @@
     "transpile:es": "BABEL_ENV=es babel src --out-dir es --copy-files",
     "transpile:lib": "BABEL_ENV=lib babel src --out-dir lib --copy-files"
   },
-  "version": "1.4.1"
+  "version": "1.4.2"
 }
