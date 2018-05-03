@@ -1,5 +1,11 @@
 # react-billboardjs CHANGELOG
 
+## 1.4.2
+
+**BUGFIXES**
+
+* Fix incomplete proptypes for `bar.width` to include `Object` type (#14)
+
 ## 1.4.1
 
 **BUGFIXES**

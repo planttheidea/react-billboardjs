@@ -99,7 +99,13 @@ export const AXIS_SHAPE = PropTypes.shape({
 
 export const BAR_SHAPE = PropTypes.shape({
   padding: PropTypes.number,
-  width: PropTypes.number,
+  width: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      max: PropTypes.number,
+      ratio: PropTypes.number
+    })
+  ]),
   zerobased: PropTypes.bool
 });
 
