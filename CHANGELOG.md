@@ -1,5 +1,11 @@
 # react-billboardjs CHANGELOG
 
+## 1.4.3
+
+**BUGFIXES**
+
+* Include `inner-middle` and `outer-middle` as possible `position` values in the `label` shape (thanks [@AlexKott](https://github.com/AlexKott))
+
 ## 1.4.2
 
 **BUGFIXES**
