@@ -12,11 +12,13 @@ export const LABEL_SHAPE = PropTypes.oneOfType([
       'inner-bottom',
       'inner-center',
       'inner-left',
+      'inner-middle',
       'inner-right',
       'inner-top',
       'outer-bottom',
       'outer-center',
       'outer-left',
+      'outer-middle',
       'outer-right',
       'outer-top'
     ]),
