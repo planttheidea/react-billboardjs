@@ -366,8 +366,8 @@ export const POINT_SHAPE = PropTypes.shape({
 export const REGION_SHAPE = PropTypes.shape({
   axis: PropTypes.string,
   class: PropTypes.string,
-  end: PropTypes.number,
-  start: PropTypes.number
+  end: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  start: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 });
 
 export const RESIZE_SHAPE = PropTypes.shape({
