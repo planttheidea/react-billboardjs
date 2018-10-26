@@ -23,6 +23,7 @@ import {
   PADDING_SHAPE,
   PIE_SHAPE,
   POINT_SHAPE,
+  RADAR_SHAPE,
   REGION_SHAPE,
   RESIZE_SHAPE,
   SIZE_SHAPE,
@@ -86,6 +87,18 @@ export const componentWillUpdate = ({updateChart}, [nextProps]) => updateChart(n
  * @returns {void}
  */
 export const componentWillUnmount = ({destroyChart}) => destroyChart();
+
+/**
+ * @function config
+ *
+ * @description
+ * get or set the config on the chart
+ *
+ * @param {BB} chart the chart instance
+ * @param {Array<any>} args the args to call config with
+ * @returns {void}
+ */
+export const config = ({chart}, args) => chart && chart.config(...args);
 
 /**
  * @function destroyChart
@@ -248,6 +261,7 @@ BillboardChart.propTypes = {
   padding: PADDING_SHAPE,
   pie: PIE_SHAPE,
   point: POINT_SHAPE,
+  radar: RADAR_SHAPE,
   regions: PropTypes.arrayOf(REGION_SHAPE),
   resize: RESIZE_SHAPE,
   size: SIZE_SHAPE,
@@ -279,6 +293,7 @@ export default createComponent(BillboardChart, {
   chart: null,
   chartElement: null,
   // instance methods
+  config,
   destroyChart,
   exportChart,
   generateChart,
