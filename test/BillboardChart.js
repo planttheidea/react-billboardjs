@@ -121,6 +121,21 @@ test('if componentWillUnmount will call destroyChart', (t) => {
   t.true(instance.destroyChart.calledOnce);
 });
 
+test('if config will call config on the underlying chart', (t) => {
+  const instance = {
+    chart: {
+      config: sinon.spy()
+    }
+  };
+
+  const args = ['key', true, 123];
+
+  component.config(instance, args);
+
+  t.true(instance.chart.config.calledOnce);
+  t.true(instance.chart.config.calledWith(...args));
+});
+
 test('if destroyChart will call destroy on the chart and set it to null when successful', (t) => {
   const destroy = sinon.spy();
 

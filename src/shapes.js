@@ -37,6 +37,12 @@ export const AXIS_Y_PADDING_SHAPE = PropTypes.shape({
 export const AXIS_TICK_SHAPE = PropTypes.shape({
   count: PropTypes.number,
   format: PropTypes.func,
+  text: PropTypes.shape({
+    position: PropTypes.shape({
+      x: PropTypes.number,
+      y: PropTypes.number
+    })
+  }),
   values: PropTypes.arrayOf(PropTypes.number)
 });
 
@@ -44,6 +50,7 @@ export const AXIS_SHAPE = PropTypes.shape({
   rotated: PropTypes.bool,
   x: PropTypes.shape({
     categories: PropTypes.arrayOf(PropTypes.string),
+    clipPath: PropTypes.bool,
     extent: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
     height: PropTypes.number,
     label: LABEL_SHAPE,
@@ -101,6 +108,12 @@ export const AXIS_SHAPE = PropTypes.shape({
 
 export const BAR_SHAPE = PropTypes.shape({
   padding: PropTypes.number,
+  radius: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.shape({
+      ratio: PropTypes.number
+    })
+  ]),
   width: PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.shape({
@@ -170,7 +183,12 @@ export const DATA_SHAPE = PropTypes.shape({
     })
   ]),
   line: PropTypes.shape({
-    classes: PropTypes.arrayOf(PropTypes.string)
+    classes: PropTypes.arrayOf(PropTypes.string),
+    connectNull: PropTypes.bool,
+    point: PropTypes.oneOf([PropTypes.arrayOf(PropTypes.string), PropTypes.bool]),
+    step: PropTypes.shape({
+      type: PropTypes.oneOf(['step', 'step-after', 'step-before'])
+    })
   }),
   mimeType: PropTypes.string,
   names: PropTypes.object,
@@ -183,7 +201,18 @@ export const DATA_SHAPE = PropTypes.shape({
   onunselected: PropTypes.func,
   order: ORDER_SHAPE,
   point: PropTypes.shape({
+    focus: PropTypes.shape({
+      expand: PropTypes.shape({
+        enabled: PropTypes.bool,
+        r: PropTypes.oneOfType([PropTypes.bool, PropTypes.number])
+      })
+    }),
     pattern: PropTypes.arrayOf(PropTypes.string),
+    r: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
+    select: PropTypes.shape({
+      r: PropTypes.number
+    }),
+    show: PropTypes.bool,
     type: PropTypes.oneOf(['circle', 'rectangle'])
   }),
   regions: PropTypes.object,
@@ -206,6 +235,7 @@ export const DATA_SHAPE = PropTypes.shape({
     'gauge',
     'line',
     'pie',
+    'radar',
     'scatter',
     'spline'
   ]),
@@ -363,11 +393,38 @@ export const POINT_SHAPE = PropTypes.shape({
   show: PropTypes.bool
 });
 
+export const RADAR_SHAPE = PropTypes.shape({
+  axis: PropTypes.shape({
+    line: PropTypes.shape({
+      show: PropTypes.bool
+    }),
+    max: PropTypes.number,
+    text: PropTypes.shape({
+      show: PropTypes.bool
+    })
+  }),
+  direction: PropTypes.shape({
+    clockwise: PropTypes.bool
+  }),
+  level: PropTypes.shape({
+    depth: PropTypes.number,
+    show: PropTypes.bool,
+    text: PropTypes.shape({
+      format: PropTypes.func,
+      show: PropTypes.bool
+    })
+  }),
+  size: PropTypes.shape({
+    ratio: PropTypes.number
+  })
+});
+
 export const REGION_SHAPE = PropTypes.shape({
   axis: PropTypes.string,
   class: PropTypes.string,
   end: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  start: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  start: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  style: PropTypes.object
 });
 
 export const RESIZE_SHAPE = PropTypes.shape({
@@ -411,7 +468,12 @@ export const TOOLTIP_SHAPE = PropTypes.shape({
     value: PropTypes.func
   }),
   grouped: PropTypes.bool,
-  linked: PropTypes.bool,
+  linked: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      name: PropTypes.string
+    })
+  ]),
   order: ORDER_SHAPE,
   position: PropTypes.func,
   show: PropTypes.bool
@@ -422,10 +484,25 @@ export const TRANSITION_SHAPE = PropTypes.shape({
 });
 
 export const ZOOM_SHAPE = PropTypes.shape({
-  enabled: PropTypes.bool,
+  enabled: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      type: PropTypes.string
+    })
+  ]),
   extent: PropTypes.arrayOf(PropTypes.number),
   onzoom: PropTypes.func,
   onzoomend: PropTypes.func,
   onzoomstart: PropTypes.func,
-  rescale: PropTypes.bool
+  rescale: PropTypes.bool,
+  resetButton: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.shape({
+      text: PropTypes.string
+    })
+  ]),
+  x: PropTypes.shape({
+    max: PropTypes.number,
+    min: PropTypes.number
+  })
 });
