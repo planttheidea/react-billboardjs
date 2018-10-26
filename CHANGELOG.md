@@ -26,6 +26,7 @@
 **BUGFIXES**
 
 - Include `fbjs` as proper dependency
+- Fix declarations for `region.end` and `region.start` (#19)
 
 ## 1.4.3
 
