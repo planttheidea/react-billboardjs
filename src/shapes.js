@@ -133,6 +133,15 @@ export const COLOR_SHAPE = PropTypes.shape({
   })
 });
 
+export const LINE_SHAPE = PropTypes.shape({
+  classes: PropTypes.arrayOf(PropTypes.string),
+  connectNull: PropTypes.bool,
+  point: PropTypes.oneOf([PropTypes.arrayOf(PropTypes.string), PropTypes.bool]),
+  step: PropTypes.shape({
+    type: PropTypes.oneOf(['step', 'step-after', 'step-before'])
+  })
+});
+
 export const ORDER_SHAPE = PropTypes.oneOfType([PropTypes.func, PropTypes.oneOf(['asc', 'desc', '', null])]);
 
 export const DATA_SHAPE = PropTypes.shape({
@@ -182,14 +191,7 @@ export const DATA_SHAPE = PropTypes.shape({
       })
     })
   ]),
-  line: PropTypes.shape({
-    classes: PropTypes.arrayOf(PropTypes.string),
-    connectNull: PropTypes.bool,
-    point: PropTypes.oneOf([PropTypes.arrayOf(PropTypes.string), PropTypes.bool]),
-    step: PropTypes.shape({
-      type: PropTypes.oneOf(['step', 'step-after', 'step-before'])
-    })
-  }),
+  line: LINE_SHAPE,
   mimeType: PropTypes.string,
   names: PropTypes.object,
   onclick: PropTypes.func,
@@ -350,13 +352,6 @@ export const LEGEND_SHAPE = PropTypes.shape({
   position: PropTypes.oneOf(['bottom', 'right', 'inset']),
   show: PropTypes.bool,
   usePoint: PropTypes.bool
-});
-
-export const LINE_SHAPE = PropTypes.shape({
-  connectNull: PropTypes.bool,
-  step: PropTypes.shape({
-    type: PropTypes.oneOfType([PropTypes.bool, PropTypes.oneOf(['step', 'step-after', 'step-before'])])
-  })
 });
 
 export const PADDING_SHAPE = PropTypes.shape({
