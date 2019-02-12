@@ -2,7 +2,10 @@
 import shallowEqual from 'fbjs/lib/shallowEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {createComponent, createElementRef} from 'react-parm';
+import {
+  createComponent,
+  createElementRef,
+} from 'react-parm';
 
 // billboard
 import bb from './bb';
@@ -33,7 +36,7 @@ import {
   TITLE_SHAPE,
   TOOLTIP_SHAPE,
   TRANSITION_SHAPE,
-  ZOOM_SHAPE
+  ZOOM_SHAPE,
 } from './shapes';
 
 /** 
@@ -152,11 +155,11 @@ export const generateChart = ({
     style: styleIgnored,
     unloadBeforeLoad: unloadBeforeLoadIgnored,
     ...config
-  }
+  },
 }) =>
   bb().generate({
     bindto: chartElement,
-    ...config
+    ...config,
   });
 
 /**
@@ -220,7 +223,14 @@ export const updateChart = (instance, [props]) => {
     instance.chart = generateChart(props);
   }
 
-  loadData(unloadBeforeLoad ? {...data, unload: true} : data);
+  loadData(
+    unloadBeforeLoad
+      ? {
+        ...data,
+        unload: true,
+      }
+      : data
+  );
 };
 
 const BillboardChart = ({className, domProps, style}, instance) => (
@@ -273,32 +283,29 @@ BillboardChart.propTypes = {
   tooltip: TOOLTIP_SHAPE,
   transition: TRANSITION_SHAPE,
   unloadBeforeLoad: PropTypes.bool,
-  zoom: ZOOM_SHAPE
+  zoom: ZOOM_SHAPE,
 };
 
 BillboardChart.defaultProps = {
   isPure: false,
-  unloadBeforeLoad: false
+  unloadBeforeLoad: false,
 };
 
 BillboardChart.getInstances = getInstances;
 
 export default createComponent(BillboardChart, {
-  // lifecycle methods
-  componentDidMount,
-  shouldComponentUpdate,
-  componentWillUpdate,
-  componentWillUnmount,
-  // instance values
   chart: null,
   chartElement: null,
-  // instance methods
+  componentDidMount,
+  componentWillUnmount,
+  componentWillUpdate,
   config,
   destroyChart,
   exportChart,
   generateChart,
   loadData,
   redraw,
+  shouldComponentUpdate,
   unloadData,
-  updateChart
+  updateChart,
 });
