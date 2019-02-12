@@ -68,7 +68,7 @@ export const AXIS_SHAPE = PropTypes.shape({
       culling: PropTypes.bool,
       cullingMax: PropTypes.number,
       fit: PropTypes.bool,
-      format: PropTypes.func,
+      format: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
       multiline: PropTypes.bool,
       outer: PropTypes.bool,
       rotate: PropTypes.number,
