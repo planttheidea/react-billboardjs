@@ -43,7 +43,7 @@ export const AXIS_TICK_SHAPE = PropTypes.shape({
       y: PropTypes.number,
     }),
   }),
-  values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.object])),
+  values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(Date)])),
 });
 
 export const AXIS_SHAPE = PropTypes.shape({
@@ -73,7 +73,7 @@ export const AXIS_SHAPE = PropTypes.shape({
       outer: PropTypes.bool,
       rotate: PropTypes.number,
       tooltip: PropTypes.bool,
-      values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.object])),
+      values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(Date)])),
       width: PropTypes.number,
     }),
     type: AXIS_TYPE_SHAPE,
@@ -288,7 +288,7 @@ export const LINES_SHAPE = PropTypes.oneOfType([
       class: PropTypes.string,
       position: PropTypes.string,
       text: PropTypes.string,
-      value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
+      value: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.instanceOf(Date)]),
     })
   ),
   PropTypes.bool,
