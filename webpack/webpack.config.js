@@ -12,38 +12,7 @@ module.exports = {
 
   entry: [path.resolve(statics.ROOT, 'src', 'index.js')],
 
-  externals: {
-    'billboard.js': {
-      amd: 'billboard.js',
-      commonjs: 'billboard.js',
-      commonjs2: 'billboard.js',
-      root: 'window'
-    },
-    d3: {
-      amd: 'd3',
-      commonjs: 'd3',
-      commonjs2: 'd3',
-      root: 'd3'
-    },
-    'prop-types': {
-      amd: 'prop-types',
-      commonjs: 'prop-types',
-      commonjs2: 'prop-types',
-      root: 'PropTypes'
-    },
-    react: {
-      amd: 'react',
-      commonjs: 'react',
-      commonjs2: 'react',
-      root: 'React'
-    },
-    'react-dom': {
-      amd: 'react-dom',
-      commonjs: 'react-dom',
-      commonjs2: 'react-dom',
-      root: 'ReactDOM'
-    }
-  },
+  externals: ['billboard.js', 'd3', 'prop-types', 'react', 'react-dom'],
 
   mode: 'development',
 
@@ -58,16 +27,16 @@ module.exports = {
           emitError: true,
           failOnError: true,
           failOnWarning: true,
-          formatter: require('eslint-friendly-formatter')
+          formatter: require('eslint-friendly-formatter'),
         },
-        test: /\.js$/
+        test: /\.js$/,
       },
       {
         include: [path.resolve(statics.ROOT, 'src'), path.resolve(statics.ROOT, 'examples')],
+        loader: 'babel-loader',
         test: /\.js$/,
-        loader: 'babel-loader'
-      }
-    ]
+      },
+    ],
   },
 
   output: {
@@ -75,8 +44,8 @@ module.exports = {
     library: 'BillboardChart',
     libraryTarget: 'umd',
     path: path.resolve(statics.ROOT, 'dist'),
-    umdNamedDefine: true
+    umdNamedDefine: true,
   },
 
-  plugins: [new webpack.EnvironmentPlugin(['NODE_ENV'])]
+  plugins: [new webpack.EnvironmentPlugin(['NODE_ENV'])],
 };

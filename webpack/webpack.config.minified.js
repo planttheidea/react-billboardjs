@@ -11,17 +11,17 @@ module.exports = Object.assign({}, defaultConfig, {
   mode: 'production',
 
   output: Object.assign({}, defaultConfig.output, {
-    filename: 'react-billboard.min.js'
+    filename: 'react-billboard.min.js',
   }),
 
   plugins: defaultConfig.plugins.concat([
     new webpack.LoaderOptionsPlugin({
       debug: false,
-      minimize: true
+      minimize: true,
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new OptimizeJsPlugin({
-      sourceMap: false
-    })
-  ])
+      sourceMap: false,
+    }),
+  ]),
 });

@@ -13,12 +13,12 @@ module.exports = Object.assign({}, defaultConfig, {
     inline: true,
     lazy: false,
     noInfo: false,
-    quiet: false,
     port: statics.DEV_SERVER_PORT,
+    quiet: false,
     stats: {
       colors: true,
-      progress: true
-    }
+      progress: true,
+    },
   },
 
   entry: [path.resolve(statics.ROOT, 'examples', 'App.js')],
@@ -32,8 +32,8 @@ module.exports = Object.assign({}, defaultConfig, {
           return Object.assign({}, rule, {
             options: Object.assign({}, rule.options, {
               emitError: undefined,
-              failOnWarning: false
-            })
+              failOnWarning: false,
+            }),
           });
         }
 
@@ -47,17 +47,17 @@ module.exports = Object.assign({}, defaultConfig, {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
-            }
-          }
-        ]
-      }
-    ]
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+    ],
   }),
 
   output: Object.assign({}, defaultConfig.output, {
-    publicPath: `http://localhost:${statics.DEV_SERVER_PORT}/`
+    publicPath: `http://localhost:${statics.DEV_SERVER_PORT}/`,
   }),
 
-  plugins: defaultConfig.plugins.concat([new HtmlWebpackPlugin()])
+  plugins: defaultConfig.plugins.concat([new HtmlWebpackPlugin()]),
 });
