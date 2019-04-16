@@ -1,5 +1,10 @@
 # react-billboardjs CHANGELOG
 
+## 1.5.1
+
+- Update PropTypes to support dates ([#26](https://github.com/planttheidea/react-billboardjs/pull/26))
+- Update to Babel 7 for build
+
 ## 1.5.0
 
 **NEW FEATURES**
