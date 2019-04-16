@@ -1,9 +1,13 @@
 # react-billboardjs CHANGELOG
 
-## 1.5.1
+## 1.5.2
 
 - Update PropTypes to support dates ([#26](https://github.com/planttheidea/react-billboardjs/pull/26))
 - Update to Babel 7 for build
+
+## 1.5.1
+
+- Fix support for `axis.x.tick.format` ([#22](https://github.com/planttheidea/react-billboardjs/pull/22))
 
 ## 1.5.0
 
