@@ -1,5 +1,9 @@
 # react-billboardjs CHANGELOG
 
+## 1.5.3
+
+- Fix ([#28](https://github.com/planttheidea/react-billboardjs/pull/28)), where `cullingMax` was declared instead of `culling.max`
+
 ## 1.5.2
 
 - Update PropTypes to support dates ([#26](https://github.com/planttheidea/react-billboardjs/pull/26))
