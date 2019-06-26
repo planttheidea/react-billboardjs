@@ -28,7 +28,7 @@
   },
   "name": "react-billboardjs",
   "dependencies": {
-    "billboard.js": "^1.6.0",
+    "billboard.js": "^1.9.2",
     "fbjs": "^1.0.0",
     "prop-types": "^15.7.2",
     "react-parm": "^2.3.0"
