@@ -12,5 +12,9 @@
     "ecmaVersion": 2017,
     "sourceType": "module"
   },
-  "rules": {}
+  "rules": {
+    "object-curly-newline": 0,
+    "object-curly-spacing": 0,
+    "rapid7/named-import-newline": 0
+  }
 }

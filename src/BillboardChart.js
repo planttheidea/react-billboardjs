@@ -2,14 +2,9 @@
 import shallowEqual from 'fbjs/lib/shallowEqual';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  createComponent,
-  createElementRef,
-} from 'react-parm';
-
+import { createComponent, createElementRef } from 'react-parm';
 // billboard
 import bb from './bb';
-
 // shapes
 import {
   AREA_SHAPE,
@@ -39,6 +34,13 @@ import {
   ZOOM_SHAPE,
 } from './shapes';
 
+const [MAJOR_VERSION, MINOR_VERSION] = React.version
+  .split('.')
+  .map((section) => parseInt(section, 10));
+
+const COMPONENT_WILL_UPDATE_NAME =
+  MAJOR_VERSION >= 16 && MINOR_VERSION >= 3 ? 'UNSAFE_componentWillUpdate' : 'componentWillUpdate';
+
 /** 
  * @function componentDidMount 
  * 
@@ -49,7 +51,8 @@ import {
  * @param {function} updateChart the method to update the chart
  * @returns {void}
  */
-export const componentDidMount = ({props, updateChart}) => requestAnimationFrame(() => updateChart(props));
+export const componentDidMount = ({ props, updateChart }) =>
+  requestAnimationFrame(() => updateChart(props));
 
 /**
  * @function shouldComponentUpdate
@@ -65,7 +68,7 @@ export const componentDidMount = ({props, updateChart}) => requestAnimationFrame
  * @returns {boolean} should the component update
  */
 
-export const shouldComponentUpdate = ({context, props}, [nextProps, , nextContext]) =>
+export const shouldComponentUpdate = ({ context, props }, [nextProps, , nextContext]) =>
   nextProps.isPure ? !shallowEqual(props, nextProps) || !shallowEqual(context, nextContext) : true;
 
 /**
@@ -78,7 +81,7 @@ export const shouldComponentUpdate = ({context, props}, [nextProps, , nextContex
  * @param {Object} nextProps the next props
  * @returns {void}
  */
-export const componentWillUpdate = ({updateChart}, [nextProps]) => updateChart(nextProps);
+export const componentWillUpdate = ({ updateChart }, [nextProps]) => updateChart(nextProps);
 
 /**
  * @function componentWillUnmount
@@ -89,7 +92,7 @@ export const componentWillUpdate = ({updateChart}, [nextProps]) => updateChart(n
  * @param {function} destroyChart the method to destroy the chart
  * @returns {void}
  */
-export const componentWillUnmount = ({destroyChart}) => destroyChart();
+export const componentWillUnmount = ({ destroyChart }) => destroyChart();
 
 /**
  * @function config
@@ -101,7 +104,7 @@ export const componentWillUnmount = ({destroyChart}) => destroyChart();
  * @param {Array<any>} args the args to call config with
  * @returns {void}
  */
-export const config = ({chart}, args) => chart && chart.config(...args);
+export const config = ({ chart }, args) => chart && chart.config(...args);
 
 /**
  * @function destroyChart
@@ -135,7 +138,8 @@ export const destroyChart = (instance) => {
  * @param {function} callback the callback with the data URL
  * @returns {void}
  */
-export const exportChart = ({chart}, [mimeType, callback]) => chart && chart.export(mimeType, callback);
+export const exportChart = ({ chart }, [mimeType, callback]) =>
+  chart && chart.export(mimeType, callback);
 
 /**
  * @function generateChart
@@ -182,7 +186,7 @@ export const getInstances = () => bb().instance;
  * @param {Object} data the data to load
  * @returns {void}
  */
-export const loadData = ({chart}, [data]) => chart && chart.load(data);
+export const loadData = ({ chart }, [data]) => chart && chart.load(data);
 
 /**
  * @function redraw
@@ -192,7 +196,7 @@ export const loadData = ({chart}, [data]) => chart && chart.load(data);
  *
  * @returns {void}
  */
-export const redraw = ({chart}) => chart && chart.flush();
+export const redraw = ({ chart }) => chart && chart.flush();
 
 /**
  * @function unloadData
@@ -204,7 +208,7 @@ export const redraw = ({chart}) => chart && chart.flush();
  * @param {Object} data the data to unload
  * @returns {void}
  */
-export const unloadData = ({chart}, [data]) => chart && chart.unload(data);
+export const unloadData = ({ chart }, [data]) => chart && chart.unload(data);
 
 /**
  * @function updateChart
@@ -216,24 +220,17 @@ export const unloadData = ({chart}, [data]) => chart && chart.unload(data);
  * @param {Object} props the props to update the chart with
  */
 export const updateChart = (instance, [props]) => {
-  const {generateChart, loadData} = instance;
-  const {data, unloadBeforeLoad} = props;
+  const { generateChart, loadData } = instance;
+  const { data, unloadBeforeLoad } = props;
 
   if (!instance.chart) {
     instance.chart = generateChart(props);
   }
 
-  loadData(
-    unloadBeforeLoad
-      ? {
-        ...data,
-        unload: true,
-      }
-      : data
-  );
+  loadData(unloadBeforeLoad ? { ...data, unload: true } : data);
 };
 
-const BillboardChart = ({className, domProps, style}, instance) => (
+const BillboardChart = ({ className, domProps, style }, instance) => (
   <div
     className={className}
     style={style}
@@ -294,11 +291,11 @@ BillboardChart.defaultProps = {
 BillboardChart.getInstances = getInstances;
 
 export default createComponent(BillboardChart, {
+  [COMPONENT_WILL_UPDATE_NAME]: componentWillUpdate,
   chart: null,
   chartElement: null,
   componentDidMount,
   componentWillUnmount,
-  componentWillUpdate,
   config,
   destroyChart,
   exportChart,

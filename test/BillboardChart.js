@@ -1,13 +1,12 @@
 // test
 import test from 'ava';
+import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 import React from 'react';
 import sinon from 'sinon';
-import {shallow} from 'enzyme';
-import toJson from 'enzyme-to-json';
-
+import * as bb from 'src/bb';
 // src
 import * as component from 'src/BillboardChart';
-import * as bb from 'src/bb';
 
 const BillboardChart = component.default;
 
@@ -19,7 +18,7 @@ const nextFrame = () =>
 test('if componentDidMount will fire updateChart with props on the first frame after render', async (t) => {
   const instance = {
     props: {},
-    updateChart: sinon.spy()
+    updateChart: sinon.spy(),
   };
 
   component.componentDidMount(instance);
@@ -34,8 +33,8 @@ test('if shouldComponentUpdate will return true if not pure', (t) => {
   const instance = {
     context: {},
     props: {
-      isPure: false
-    }
+      isPure: false,
+    },
   };
 
   const nextProps = {...instance.props};
@@ -51,8 +50,8 @@ test('if shouldComponentUpdate will return true if pure and props are not equal'
   const instance = {
     context: {},
     props: {
-      isPure: true
-    }
+      isPure: true,
+    },
   };
 
   const nextProps = {...instance.props, className: 'foo'};
@@ -68,8 +67,8 @@ test('if shouldComponentUpdate will return true if pure and context is not equal
   const instance = {
     context: {},
     props: {
-      isPure: true
-    }
+      isPure: true,
+    },
   };
 
   const nextProps = {...instance.props};
@@ -85,8 +84,8 @@ test('if shouldComponentUpdate will return false if pure and props / context are
   const instance = {
     context: {},
     props: {
-      isPure: true
-    }
+      isPure: true,
+    },
   };
 
   const nextProps = {...instance.props};
@@ -100,7 +99,7 @@ test('if shouldComponentUpdate will return false if pure and props / context are
 
 test('if componentWillUpdate will update the chart with nextProps', (t) => {
   const instance = {
-    updateChart: sinon.spy()
+    updateChart: sinon.spy(),
   };
 
   const nextProps = {};
@@ -113,7 +112,7 @@ test('if componentWillUpdate will update the chart with nextProps', (t) => {
 
 test('if componentWillUnmount will call destroyChart', (t) => {
   const instance = {
-    destroyChart: sinon.spy()
+    destroyChart: sinon.spy(),
   };
 
   component.componentWillUnmount(instance);
@@ -124,8 +123,8 @@ test('if componentWillUnmount will call destroyChart', (t) => {
 test('if config will call config on the underlying chart', (t) => {
   const instance = {
     chart: {
-      config: sinon.spy()
-    }
+      config: sinon.spy(),
+    },
   };
 
   const args = ['key', true, 123];
@@ -141,8 +140,8 @@ test('if destroyChart will call destroy on the chart and set it to null when suc
 
   const instance = {
     chart: {
-      destroy
-    }
+      destroy,
+    },
   };
 
   component.destroyChart(instance);
@@ -158,8 +157,8 @@ test('if destroyChart will call console.error if there is an error destroying th
 
   const instance = {
     chart: {
-      destroy
-    }
+      destroy,
+    },
   };
 
   const consoleStub = sinon.stub(console, 'error');
@@ -175,8 +174,6 @@ test('if destroyChart will call console.error if there is an error destroying th
 });
 
 test('if destroyChart will do nothing if there is no chart', (t) => {
-  const error = new Error('boom');
-
   const instance = {};
 
   const consoleStub = sinon.stub(console, 'error');
@@ -193,8 +190,8 @@ test('if destroyChart will do nothing if there is no chart', (t) => {
 test('if exportChart will call export if the chart exists', (t) => {
   const instance = {
     chart: {
-      export: sinon.spy()
-    }
+      export: sinon.spy(),
+    },
   };
 
   const mimeType = 'mimeType';
@@ -208,7 +205,7 @@ test('if exportChart will call export if the chart exists', (t) => {
 
 test('if exportChart will not call export if the chart does not exist', (t) => {
   const instance = {
-    chart: null
+    chart: null,
   };
 
   const mimeType = 'mimeType';
@@ -222,19 +219,19 @@ test('if exportChart will not call export if the chart does not exist', (t) => {
 test.serial('if generateChart will call generate on bb with the config stripped of extra props', (t) => {
   const instance = {
     chartElement: {
-      chart: 'element'
+      chart: 'element',
     },
     props: {
       className: 'className',
+      config: 'value',
       isPure: false,
       style: {},
       unloadBeforeLoad: false,
-      config: 'value'
-    }
+    },
   };
 
   const fakeBb = {
-    generate: sinon.spy()
+    generate: sinon.spy(),
   };
 
   const bbStub = sinon.stub(bb, 'default').returns(fakeBb);
@@ -251,7 +248,7 @@ test.serial('if generateChart will call generate on bb with the config stripped 
 
 test('if loadData will do nothing if the chart does not exist', (t) => {
   const instance = {
-    chart: null
+    chart: null,
   };
 
   const data = {};
@@ -268,8 +265,8 @@ test('if loadData will do nothing if the chart does not exist', (t) => {
 test('if loadData will call load on the instance chart', (t) => {
   const instance = {
     chart: {
-      load: sinon.spy()
-    }
+      load: sinon.spy(),
+    },
   };
 
   const data = {};
@@ -282,7 +279,7 @@ test('if loadData will call load on the instance chart', (t) => {
 
 test('if redraw will do nothing if the chart does not exist', (t) => {
   const instance = {
-    chart: null
+    chart: null,
   };
 
   try {
@@ -297,8 +294,8 @@ test('if redraw will do nothing if the chart does not exist', (t) => {
 test('if redraw will trigger flush on the chart', (t) => {
   const instance = {
     chart: {
-      flush: sinon.spy()
-    }
+      flush: sinon.spy(),
+    },
   };
 
   component.redraw(instance);
@@ -308,7 +305,7 @@ test('if redraw will trigger flush on the chart', (t) => {
 
 test('if unloadData will do nothing if the chart does not exist', (t) => {
   const instance = {
-    chart: null
+    chart: null,
   };
 
   const data = {};
@@ -325,8 +322,8 @@ test('if unloadData will do nothing if the chart does not exist', (t) => {
 test('if unloadData will call unload on the instance chart', (t) => {
   const instance = {
     chart: {
-      unload: sinon.spy()
-    }
+      unload: sinon.spy(),
+    },
   };
 
   const data = {};
@@ -344,12 +341,12 @@ test('if updateChart will create the chart if it does not exist and then load th
     chart: null,
     generateChart: sinon.stub().returns(chart),
     loadData: sinon.spy(),
-    unloadData: sinon.spy()
+    unloadData: sinon.spy(),
   };
 
   const props = {
     data: {},
-    unloadBeforeLoad: false
+    unloadBeforeLoad: false,
   };
 
   component.updateChart(instance, [props]);
@@ -368,12 +365,12 @@ test('if updateChart will not create the chart if it already is populated', (t) 
     chart,
     generateChart: sinon.stub().returns(chart),
     loadData: sinon.spy(),
-    unloadData: sinon.spy()
+    unloadData: sinon.spy(),
   };
 
   const props = {
     data: {},
-    unloadBeforeLoad: false
+    unloadBeforeLoad: false,
   };
 
   component.updateChart(instance, [props]);
@@ -391,12 +388,12 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
     chart: null,
     generateChart: sinon.stub().returns(chart),
     loadData: sinon.spy(),
-    unloadData: sinon.spy()
+    unloadData: sinon.spy(),
   };
 
   const props = {
     data: {},
-    unloadBeforeLoad: true
+    unloadBeforeLoad: true,
   };
 
   component.updateChart(instance, [props]);
@@ -410,17 +407,17 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
 
 test.serial('if BillboardChart renders correctly with default props', async (t) => {
   const props = {
-    data: {}
+    data: {},
   };
 
   const chart = {
-    load: sinon.spy()
+    load: sinon.spy(),
   };
 
   const bbStub = {
     generate() {
       return chart;
-    }
+    },
   };
 
   const stub = sinon.stub(bb, 'default').returns(bbStub);
@@ -439,17 +436,17 @@ test.serial('if BillboardChart renders correctly with default props', async (t) 
 test.serial('if BillboardChart renders correctly with a custom className', async (t) => {
   const props = {
     className: 'className',
-    data: {}
+    data: {},
   };
 
   const chart = {
-    load: sinon.spy()
+    load: sinon.spy(),
   };
 
   const bbStub = {
     generate() {
       return chart;
-    }
+    },
   };
 
   const stub = sinon.stub(bb, 'default').returns(bbStub);
@@ -469,18 +466,18 @@ test.serial('if BillboardChart renders correctly with a custom style object', as
   const props = {
     data: {},
     style: {
-      display: 'inline-block'
-    }
+      display: 'inline-block',
+    },
   };
 
   const chart = {
-    load: sinon.spy()
+    load: sinon.spy(),
   };
 
   const bbStub = {
     generate() {
       return chart;
-    }
+    },
   };
 
   const stub = sinon.stub(bb, 'default').returns(bbStub);
@@ -500,18 +497,18 @@ test.serial('if BillboardChart renders correctly with custom domProps passed', a
   const props = {
     data: {},
     domProps: {
-      'data-foo': 'bar'
-    }
+      'data-foo': 'bar',
+    },
   };
 
   const chart = {
-    load: sinon.spy()
+    load: sinon.spy(),
   };
 
   const bbStub = {
     generate() {
       return chart;
-    }
+    },
   };
 
   const stub = sinon.stub(bb, 'default').returns(bbStub);
@@ -531,7 +528,7 @@ test.serial('if BillboardChart has a static method that returns the array of ins
   const instance = ['foo', 'bar'];
 
   const stub = sinon.stub(bb, 'default').returns({
-    instance
+    instance,
   });
 
   const result = BillboardChart.getInstances();

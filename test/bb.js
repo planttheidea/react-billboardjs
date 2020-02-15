@@ -20,7 +20,7 @@ test.serial('if getBb will call require to get billboard.js when it does not cur
       requireCount++;
 
       return mockBb;
-    }
+    },
   };
 
   mockRequire('billboard.js', mockBillboard);
