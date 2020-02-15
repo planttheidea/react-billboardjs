@@ -8,5 +8,5 @@ browserEnv();
 global.requestAnimationFrame = window.requestAnimationFrame = raf;
 
 enzyme.configure({
-  adapter: new Adapter()
+  adapter: new Adapter(),
 });
