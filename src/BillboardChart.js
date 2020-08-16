@@ -38,8 +38,8 @@ const [MAJOR_VERSION, MINOR_VERSION] = React.version
   .split('.')
   .map((section) => parseInt(section, 10));
 
-const COMPONENT_WILL_UPDATE_NAME =
-  MAJOR_VERSION >= 16 && MINOR_VERSION >= 3 ? 'UNSAFE_componentWillUpdate' : 'componentWillUpdate';
+const CAN_GET_SNAPSHOT_BEFORE_UPDATE =
+  MAJOR_VERSION > 16 || (MAJOR_VERSION === 16 && MINOR_VERSION >= 3);
 
 /** 
  * @function componentDidMount 
@@ -68,8 +68,13 @@ export const componentDidMount = ({ props, updateChart }) =>
  * @returns {boolean} should the component update
  */
 
-export const shouldComponentUpdate = ({ context, props }, [nextProps, , nextContext]) =>
-  nextProps.isPure ? !shallowEqual(props, nextProps) || !shallowEqual(context, nextContext) : true;
+export const shouldComponentUpdate = (
+  { context, props },
+  [nextProps, , nextContext]
+) =>
+  nextProps.isPure
+    ? !shallowEqual(props, nextProps) || !shallowEqual(context, nextContext)
+    : true;
 
 /**
  * @function componentWillUpdate
@@ -81,7 +86,21 @@ export const shouldComponentUpdate = ({ context, props }, [nextProps, , nextCont
  * @param {Object} nextProps the next props
  * @returns {void}
  */
-export const componentWillUpdate = ({ updateChart }, [nextProps]) => updateChart(nextProps);
+export const componentWillUpdate = ({ updateChart }, [nextProps]) =>
+  updateChart(nextProps);
+
+/**
+ * @function getSnapshotBeforeUpdate
+ *
+ * @description
+ * prior to the component update, update the chart with the new props
+ *
+ * @param {Object} props the just-updated props
+ * @param {function} updateChart the method to update the chart
+ * @returns {void}
+ */
+export const getSnapshotBeforeUpdate = ({ props, updateChart }) =>
+  updateChart(props);
 
 /**
  * @function componentWillUnmount
@@ -290,8 +309,7 @@ BillboardChart.defaultProps = {
 
 BillboardChart.getInstances = getInstances;
 
-export default createComponent(BillboardChart, {
-  [COMPONENT_WILL_UPDATE_NAME]: componentWillUpdate,
+const schema = {
   chart: null,
   chartElement: null,
   componentDidMount,
@@ -305,4 +323,12 @@ export default createComponent(BillboardChart, {
   shouldComponentUpdate,
   unloadData,
   updateChart,
-});
+};
+
+if (CAN_GET_SNAPSHOT_BEFORE_UPDATE) {
+  schema.getSnapshotBeforeUpdate = getSnapshotBeforeUpdate;
+} else {
+  schema.componentWillUpdate = componentWillUpdate;
+}
+
+export default createComponent(BillboardChart, schema);
