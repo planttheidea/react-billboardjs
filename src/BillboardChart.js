@@ -38,8 +38,10 @@ const [MAJOR_VERSION, MINOR_VERSION] = React.version
   .split('.')
   .map((section) => parseInt(section, 10));
 
-const COMPONENT_WILL_UPDATE_NAME =
-  MAJOR_VERSION >= 16 && MINOR_VERSION >= 3 ? 'UNSAFE_componentWillUpdate' : 'componentWillUpdate';
+const BEFORE_UPDATE_NAME =
+  MAJOR_VERSION > 16 || (MAJOR_VERSION === 16 && MINOR_VERSION >= 3)
+    ? 'getSnapshotBeforeUpdate'
+    : 'beforeUpdate';
 
 /** 
  * @function componentDidMount 
@@ -68,11 +70,16 @@ export const componentDidMount = ({ props, updateChart }) =>
  * @returns {boolean} should the component update
  */
 
-export const shouldComponentUpdate = ({ context, props }, [nextProps, , nextContext]) =>
-  nextProps.isPure ? !shallowEqual(props, nextProps) || !shallowEqual(context, nextContext) : true;
+export const shouldComponentUpdate = (
+  { context, props },
+  [nextProps, , nextContext]
+) =>
+  nextProps.isPure
+    ? !shallowEqual(props, nextProps) || !shallowEqual(context, nextContext)
+    : true;
 
 /**
- * @function componentWillUpdate
+ * @function beforeUpdate
  *
  * @description
  * when the component will update, update the chart with the new props
@@ -81,7 +88,8 @@ export const shouldComponentUpdate = ({ context, props }, [nextProps, , nextCont
  * @param {Object} nextProps the next props
  * @returns {void}
  */
-export const componentWillUpdate = ({ updateChart }, [nextProps]) => updateChart(nextProps);
+export const beforeUpdate = ({ updateChart }, [nextProps]) =>
+  updateChart(nextProps);
 
 /**
  * @function componentWillUnmount
@@ -291,7 +299,7 @@ BillboardChart.defaultProps = {
 BillboardChart.getInstances = getInstances;
 
 export default createComponent(BillboardChart, {
-  [COMPONENT_WILL_UPDATE_NAME]: componentWillUpdate,
+  [BEFORE_UPDATE_NAME]: beforeUpdate,
   chart: null,
   chartElement: null,
   componentDidMount,
