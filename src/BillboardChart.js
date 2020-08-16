@@ -93,10 +93,10 @@ export const componentWillUpdate = ({ updateChart }, [nextProps]) =>
  * @function getSnapshotBeforeUpdate
  *
  * @description
- * when the component will update, update the chart with the new props
+ * prior to the component update, update the chart with the new props
  *
+ * @param {Object} props the just-updated props
  * @param {function} updateChart the method to update the chart
- * @param {Object} nextProps the next props
  * @returns {void}
  */
 export const getSnapshotBeforeUpdate = ({ props, updateChart }) =>
