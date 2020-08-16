@@ -37,11 +37,15 @@ test('if shouldComponentUpdate will return true if not pure', (t) => {
     },
   };
 
-  const nextProps = {...instance.props};
+  const nextProps = { ...instance.props };
   const nextState = null;
   const nextContext = {};
 
-  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
+  const result = component.shouldComponentUpdate(instance, [
+    nextProps,
+    nextState,
+    nextContext,
+  ]);
 
   t.true(result);
 });
@@ -54,11 +58,15 @@ test('if shouldComponentUpdate will return true if pure and props are not equal'
     },
   };
 
-  const nextProps = {...instance.props, className: 'foo'};
+  const nextProps = { ...instance.props, className: 'foo' };
   const nextState = null;
   const nextContext = {};
 
-  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
+  const result = component.shouldComponentUpdate(instance, [
+    nextProps,
+    nextState,
+    nextContext,
+  ]);
 
   t.true(result);
 });
@@ -71,11 +79,15 @@ test('if shouldComponentUpdate will return true if pure and context is not equal
     },
   };
 
-  const nextProps = {...instance.props};
+  const nextProps = { ...instance.props };
   const nextState = null;
-  const nextContext = {apiKey: 'apiKey'};
+  const nextContext = { apiKey: 'apiKey' };
 
-  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
+  const result = component.shouldComponentUpdate(instance, [
+    nextProps,
+    nextState,
+    nextContext,
+  ]);
 
   t.true(result);
 });
@@ -88,17 +100,36 @@ test('if shouldComponentUpdate will return false if pure and props / context are
     },
   };
 
-  const nextProps = {...instance.props};
+  const nextProps = { ...instance.props };
   const nextState = null;
-  const nextContext = {...instance.context};
+  const nextContext = { ...instance.context };
 
-  const result = component.shouldComponentUpdate(instance, [nextProps, nextState, nextContext]);
+  const result = component.shouldComponentUpdate(instance, [
+    nextProps,
+    nextState,
+    nextContext,
+  ]);
 
   t.false(result);
 });
 
+test('if getSnapshotBeforeUpdate will update the chart with next props', (t) => {
+  const instance = {
+    props: {},
+    updateChart: sinon.spy(),
+  };
+
+  const prevProps = {};
+
+  component.getSnapshotBeforeUpdate(instance, [prevProps]);
+
+  t.true(instance.updateChart.calledOnce);
+  t.true(instance.updateChart.calledWith(instance.props));
+});
+
 test('if componentWillUpdate will update the chart with nextProps', (t) => {
   const instance = {
+    props: {},
     updateChart: sinon.spy(),
   };
 
@@ -216,35 +247,40 @@ test('if exportChart will not call export if the chart does not exist', (t) => {
   });
 });
 
-test.serial('if generateChart will call generate on bb with the config stripped of extra props', (t) => {
-  const instance = {
-    chartElement: {
-      chart: 'element',
-    },
-    props: {
-      className: 'className',
-      config: 'value',
-      isPure: false,
-      style: {},
-      unloadBeforeLoad: false,
-    },
-  };
+test.serial(
+  'if generateChart will call generate on bb with the config stripped of extra props',
+  (t) => {
+    const instance = {
+      chartElement: {
+        chart: 'element',
+      },
+      props: {
+        className: 'className',
+        config: 'value',
+        isPure: false,
+        style: {},
+        unloadBeforeLoad: false,
+      },
+    };
 
-  const fakeBb = {
-    generate: sinon.spy(),
-  };
+    const fakeBb = {
+      generate: sinon.spy(),
+    };
 
-  const bbStub = sinon.stub(bb, 'default').returns(fakeBb);
+    const bbStub = sinon.stub(bb, 'default').returns(fakeBb);
 
-  component.generateChart(instance);
+    component.generateChart(instance);
 
-  t.true(bbStub.calledOnce);
+    t.true(bbStub.calledOnce);
 
-  t.true(fakeBb.generate.calledOnce);
-  t.deepEqual(fakeBb.generate.args[0], [{bindto: instance.chartElement, config: instance.props.config}]);
+    t.true(fakeBb.generate.calledOnce);
+    t.deepEqual(fakeBb.generate.args[0], [
+      { bindto: instance.chartElement, config: instance.props.config },
+    ]);
 
-  bbStub.restore();
-});
+    bbStub.restore();
+  }
+);
 
 test('if loadData will do nothing if the chart does not exist', (t) => {
   const instance = {
@@ -402,138 +438,158 @@ test('if updateChart will unload the data if unloadBeforeLoad is set to true', (
   t.is(instance.chart, chart);
 
   t.true(instance.loadData.calledOnce);
-  t.true(instance.loadData.calledWith({...props.data, unload: props.unloadBeforeLoad}));
+  t.true(
+    instance.loadData.calledWith({
+      ...props.data,
+      unload: props.unloadBeforeLoad,
+    })
+  );
 });
 
-test.serial('if BillboardChart renders correctly with default props', async (t) => {
-  const props = {
-    data: {},
-  };
+test.serial(
+  'if BillboardChart renders correctly with default props',
+  async (t) => {
+    const props = {
+      data: {},
+    };
 
-  const chart = {
-    load: sinon.spy(),
-  };
+    const chart = {
+      load: sinon.spy(),
+    };
 
-  const bbStub = {
-    generate() {
-      return chart;
-    },
-  };
+    const bbStub = {
+      generate() {
+        return chart;
+      },
+    };
 
-  const stub = sinon.stub(bb, 'default').returns(bbStub);
+    const stub = sinon.stub(bb, 'default').returns(bbStub);
 
-  const wrapper = shallow(<BillboardChart {...props} />);
+    const wrapper = shallow(<BillboardChart {...props} />);
 
-  t.snapshot(toJson(wrapper));
+    t.snapshot(toJson(wrapper));
 
-  await nextFrame();
+    await nextFrame();
 
-  t.true(stub.calledOnce);
+    t.true(stub.calledOnce);
 
-  stub.restore();
-});
+    stub.restore();
+  }
+);
 
-test.serial('if BillboardChart renders correctly with a custom className', async (t) => {
-  const props = {
-    className: 'className',
-    data: {},
-  };
+test.serial(
+  'if BillboardChart renders correctly with a custom className',
+  async (t) => {
+    const props = {
+      className: 'className',
+      data: {},
+    };
 
-  const chart = {
-    load: sinon.spy(),
-  };
+    const chart = {
+      load: sinon.spy(),
+    };
 
-  const bbStub = {
-    generate() {
-      return chart;
-    },
-  };
+    const bbStub = {
+      generate() {
+        return chart;
+      },
+    };
 
-  const stub = sinon.stub(bb, 'default').returns(bbStub);
+    const stub = sinon.stub(bb, 'default').returns(bbStub);
 
-  const wrapper = shallow(<BillboardChart {...props} />);
+    const wrapper = shallow(<BillboardChart {...props} />);
 
-  t.snapshot(toJson(wrapper));
+    t.snapshot(toJson(wrapper));
 
-  await nextFrame();
+    await nextFrame();
 
-  t.true(stub.calledOnce);
+    t.true(stub.calledOnce);
 
-  stub.restore();
-});
+    stub.restore();
+  }
+);
 
-test.serial('if BillboardChart renders correctly with a custom style object', async (t) => {
-  const props = {
-    data: {},
-    style: {
-      display: 'inline-block',
-    },
-  };
+test.serial(
+  'if BillboardChart renders correctly with a custom style object',
+  async (t) => {
+    const props = {
+      data: {},
+      style: {
+        display: 'inline-block',
+      },
+    };
 
-  const chart = {
-    load: sinon.spy(),
-  };
+    const chart = {
+      load: sinon.spy(),
+    };
 
-  const bbStub = {
-    generate() {
-      return chart;
-    },
-  };
+    const bbStub = {
+      generate() {
+        return chart;
+      },
+    };
 
-  const stub = sinon.stub(bb, 'default').returns(bbStub);
+    const stub = sinon.stub(bb, 'default').returns(bbStub);
 
-  const wrapper = shallow(<BillboardChart {...props} />);
+    const wrapper = shallow(<BillboardChart {...props} />);
 
-  t.snapshot(toJson(wrapper));
+    t.snapshot(toJson(wrapper));
 
-  await nextFrame();
+    await nextFrame();
 
-  t.true(stub.calledOnce);
+    t.true(stub.calledOnce);
 
-  stub.restore();
-});
+    stub.restore();
+  }
+);
 
-test.serial('if BillboardChart renders correctly with custom domProps passed', async (t) => {
-  const props = {
-    data: {},
-    domProps: {
-      'data-foo': 'bar',
-    },
-  };
+test.serial(
+  'if BillboardChart renders correctly with custom domProps passed',
+  async (t) => {
+    const props = {
+      data: {},
+      domProps: {
+        'data-foo': 'bar',
+      },
+    };
 
-  const chart = {
-    load: sinon.spy(),
-  };
+    const chart = {
+      load: sinon.spy(),
+    };
 
-  const bbStub = {
-    generate() {
-      return chart;
-    },
-  };
+    const bbStub = {
+      generate() {
+        return chart;
+      },
+    };
 
-  const stub = sinon.stub(bb, 'default').returns(bbStub);
+    const stub = sinon.stub(bb, 'default').returns(bbStub);
 
-  const wrapper = shallow(<BillboardChart {...props} />);
+    const wrapper = shallow(<BillboardChart {...props} />);
 
-  t.snapshot(toJson(wrapper));
+    t.snapshot(toJson(wrapper));
 
-  await nextFrame();
+    await nextFrame();
 
-  t.true(stub.calledOnce);
+    t.true(stub.calledOnce);
 
-  stub.restore();
-});
+    stub.restore();
+  }
+);
 
-test.serial('if BillboardChart has a static method that returns the array of instances from the bb object', (t) => {
-  const instance = ['foo', 'bar'];
+test.serial(
+  'if BillboardChart has a static method that returns the array of instances from the bb object',
+  (t) => {
+    const instance = ['foo', 'bar'];
 
-  const stub = sinon.stub(bb, 'default').returns({
-    instance,
-  });
+    const stub = sinon.stub(bb, 'default').returns({
+      instance,
+    });
 
-  const result = BillboardChart.getInstances();
+    const result = BillboardChart.getInstances();
 
-  t.is(result, instance);
+    t.is(result, instance);
 
-  stub.restore();
-});
+    stub.restore();
+  }
+);
