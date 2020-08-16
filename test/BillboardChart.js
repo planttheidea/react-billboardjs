@@ -113,7 +113,7 @@ test('if shouldComponentUpdate will return false if pure and props / context are
   t.false(result);
 });
 
-test('if getSnapshotBeforeUpdate will update the chart with next props', (t) => {
+test('if getSnapshotBeforeUpdate will update the chart with now-updated props', (t) => {
   const instance = {
     props: {},
     updateChart: sinon.spy(),
