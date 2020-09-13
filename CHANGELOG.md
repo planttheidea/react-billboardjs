@@ -1,5 +1,13 @@
 # react-billboardjs CHANGELOG
 
+## 1.5.5
+
+- Fix ([#40](https://github.com/planttheidea/react-billboardjs/pull/40)), where the version validator for legacy lifecycle warning worked incorrectly for version 17
+
+## 1.5.4
+
+- Avoid legacy lifecycle warning
+
 ## 1.5.3
 
 - Fix ([#28](https://github.com/planttheidea/react-billboardjs/pull/28)), where `cullingMax` was declared instead of `culling.max`
