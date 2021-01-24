@@ -1,8 +1,12 @@
 # react-billboardjs CHANGELOG
 
+## 1.5.6
+
+- Fix [#44](https://github.com/planttheidea/react-billboardjs/issues/44), where React was giving warnings due to improper use of `getSnapshotBeforeUpdate`
+
 ## 1.5.5
 
-- Fix ([#40](https://github.com/planttheidea/react-billboardjs/pull/40)), where the version validator for legacy lifecycle warning worked incorrectly for version 17
+- Fix [#40](https://github.com/planttheidea/react-billboardjs/pull/40), where the version validator for legacy lifecycle warning worked incorrectly for version 17
 
 ## 1.5.4
 
@@ -10,7 +14,7 @@
 
 ## 1.5.3
 
-- Fix ([#28](https://github.com/planttheidea/react-billboardjs/pull/28)), where `cullingMax` was declared instead of `culling.max`
+- Fix [#28](https://github.com/planttheidea/react-billboardjs/pull/28), where `cullingMax` was declared instead of `culling.max`
 
 ## 1.5.2
 

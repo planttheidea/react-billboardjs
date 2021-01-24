@@ -38,7 +38,7 @@ const [MAJOR_VERSION, MINOR_VERSION] = React.version
   .split('.')
   .map((section) => parseInt(section, 10));
 
-const CAN_GET_SNAPSHOT_BEFORE_UPDATE =
+const UNSAFE_LIFECYCLES_DEPRECATED =
   MAJOR_VERSION > 16 || (MAJOR_VERSION === 16 && MINOR_VERSION >= 3);
 
 /** 
@@ -88,19 +88,6 @@ export const shouldComponentUpdate = (
  */
 export const componentWillUpdate = ({ updateChart }, [nextProps]) =>
   updateChart(nextProps);
-
-/**
- * @function getSnapshotBeforeUpdate
- *
- * @description
- * prior to the component update, update the chart with the new props
- *
- * @param {Object} props the just-updated props
- * @param {function} updateChart the method to update the chart
- * @returns {void}
- */
-export const getSnapshotBeforeUpdate = ({ props, updateChart }) =>
-  updateChart(props);
 
 /**
  * @function componentWillUnmount
@@ -325,8 +312,8 @@ const schema = {
   updateChart,
 };
 
-if (CAN_GET_SNAPSHOT_BEFORE_UPDATE) {
-  schema.getSnapshotBeforeUpdate = getSnapshotBeforeUpdate;
+if (UNSAFE_LIFECYCLES_DEPRECATED) {
+  schema.UNSAFE_componentWillUpdate = componentWillUpdate;
 } else {
   schema.componentWillUpdate = componentWillUpdate;
 }
