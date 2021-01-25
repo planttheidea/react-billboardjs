@@ -66,7 +66,7 @@
   "repository": "git@github.com:planttheidea/react-billboardjs.git",
   "scripts": {
     "build": "rollup -c",
-    "clean": "rimraf lib && rimraf es && rimraf dist",
+    "clean": "rimraf dist",
     "dev": "NODE_ENV=development webpack-dev-server --progress --colors",
     "lint": "eslint src/*.js",
     "lint:fix": "npm run lint -- --fix",
@@ -76,9 +76,7 @@
     "start": "npm run dev",
     "test": "NODE_ENV=test NODE_PATH=. jest",
     "test:coverage": "npm test -- --coverage",
-    "test:watch": "npm test -- --watch",
-    "transpile:es": "BABEL_ENV=es babel src --out-dir es --copy-files",
-    "transpile:lib": "BABEL_ENV=lib babel src --out-dir lib --copy-files"
+    "test:watch": "npm test -- --watch"
   },
   "version": "1.5.6"
 }
