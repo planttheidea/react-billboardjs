@@ -30,8 +30,6 @@ import {
   ZOOM_SHAPE,
 } from './shapes';
 
-const raf = requestAnimationFrame || ((fn) => setTimeout(fn, 17));
-
 function shallowEqual(a, b) {
   const aKeys = Object.keys(a);
   const bKeys = Object.keys(b);
@@ -103,54 +101,54 @@ class BillboardChart extends React.Component {
     return bb.instance;
   };
 
+  constructor(props) {
+    super(props);
+
+    // Explicit binds instead of arrow functions for lower memory footprint.
+    this.exportChart = this.exportChart.bind(this);
+    this.destroyChart = this.destroyChart.bind(this);
+    this.loadData = this.loadData.bind(this);
+    this.redraw = this.redraw.bind(this);
+    this.setChart = this.setChart.bind(this);
+    this.setChartElementRef = this.setChartElementRef.bind(this);
+    this.unloadData = this.unloadData.bind(this);
+    this.updateConfig = this.updateConfig.bind(this);
+  }
+
   componentDidMount() {
-    this.updateChart(this.props);
+    this.updateChart();
   }
 
   shouldComponentUpdate(nextProps) {
-    return !!nextProps.isPure && shallowEqual(this.props, nextProps);
+    return !nextProps.isPure || shallowEqual(this.props, nextProps);
   }
 
   componentDidUpdate() {
-    this.updateChart(this.props);
+    this.updateChart();
   }
 
   componentWillUnmount() {
     this.destroyChart();
   }
 
-  config = (...args) => {
-    if (!this.chart) {
-      // eslint-disable-next-line no-console
-      return console.error(
-        'You are trying to set the config a chart that does not exist.' +
-          'Have you passed `data`?',
-      );
+  destroyChart() {
+    if (this.chart) {
+      this.chart.destroy();
     }
 
-    return this.chart.config(...args);
-  };
+    this.chart = null;
+  }
 
-  exportChart = (mimeType, onExported) => {
+  exportChart(mimeType, onExported) {
     if (!this.chart) {
       // eslint-disable-next-line no-console
-      return console.error('No chart is available to be exported.');
+      return console.error('No chart is available to export.');
     }
 
     this.chart.export(mimeType, onExported);
-  };
+  }
 
-  destroyChart = () => {
-    if (!this.chart) {
-      // eslint-disable-next-line no-console
-      return console.warn('No chart is available to destroy.');
-    }
-
-    this.chart.destroy();
-    this.chart = null;
-  };
-
-  loadData = (data) => {
+  loadData(data) {
     if (!this.chart) {
       // eslint-disable-next-line no-console
       return console.error(
@@ -159,21 +157,24 @@ class BillboardChart extends React.Component {
     }
 
     this.chart.load(data);
-  };
+  }
 
-  redraw = () => {
+  redraw() {
     if (!this.chart) {
       // eslint-disable-next-line no-console
       return console.error('No chart is available to draw.');
     }
 
     this.chart.flush();
-  };
+  }
 
-  setChart = (data) => {
-    if (!this.chart) {
+  setChart(data) {
+    if (this.chart) {
+      this.loadData(data);
+    } else {
       const {
         className: classNameIgnored,
+        domProps: domPropsIgnored,
         isPure: isPureIgnored,
         style: styleIgnored,
         unloadBeforeLoad: unloadBeforeLoadIgnored,
@@ -185,15 +186,13 @@ class BillboardChart extends React.Component {
         ...config,
       });
     }
+  }
 
-    this.loadData(data);
-  };
-
-  setChartElementRef = (element) => {
+  setChartElementRef(element) {
     this.chartElement = element;
-  };
+  }
 
-  unloadData = (data) => {
+  unloadData(data) {
     if (!this.chart) {
       // eslint-disable-next-line no-console
       return console.error(
@@ -202,18 +201,26 @@ class BillboardChart extends React.Component {
     }
 
     this.chart.unload(data);
-  };
+  }
 
-  updateChart = () => {
-    raf(() => {
-      const { data, unloadBeforeLoad } = this.props;
-      const dataToLoad = unloadBeforeLoad ? { ...data, unload: true } : data;
+  updateChart() {
+    const { data, unloadBeforeLoad } = this.props;
+    const dataToLoad = unloadBeforeLoad ? { ...data, unload: true } : data;
 
-      raf(() => {
-        this.setChart(dataToLoad);
-      });
-    });
-  };
+    this.setChart(dataToLoad);
+  }
+
+  updateConfig(name, value, redraw) {
+    if (!this.chart) {
+      // eslint-disable-next-line no-console
+      return console.error(
+        'You are trying to set the config a chart that does not exist.' +
+          'Have you passed `data`?',
+      );
+    }
+
+    return this.chart.config(name, value, redraw);
+  }
 
   render() {
     const { className, domProps, style } = this.props;

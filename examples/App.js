@@ -11,16 +11,26 @@ import LineChart from './LineChart';
 class App extends PureComponent {
   element = null;
 
+  state = { visible: false };
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState(() => ({ visible: true }));
+    }, 0);
+  }
+
   render() {
     return (
       <div>
         <h1>App</h1>
 
-        <div>
-          <LineChart />
-          <BarChart />
-          <DonutChart />
-        </div>
+        {this.state.visible && (
+          <div>
+            <LineChart />
+            <BarChart />
+            <DonutChart />
+          </div>
+        )}
       </div>
     );
   }
