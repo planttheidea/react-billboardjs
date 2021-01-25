@@ -31,10 +31,12 @@ _This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modi
     - [getInstances](#getinstances)
   - [Development](#development)
 
+**NOTE**: This documentation is specific to the next version of `react-billboardjs`. For documentation on version 1, see [that version's README](https://github.com/planttheidea/react-billboardjs/tree/v1).
+
 ## Installation
 
 ```
-$ npm install react-billboardjs --save
+$ npm install react-billboardjs@next --save
 ```
 
 ## Usage
