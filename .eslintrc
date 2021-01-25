@@ -19,5 +19,10 @@
   "rules": {
     "no-console": "warn",
     "no-unused-vars": ["error", { "varsIgnorePattern": "[iI]gnored" }]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
