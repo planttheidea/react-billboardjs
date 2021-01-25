@@ -1,5 +1,6 @@
 // external dependencies
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
+import { donut } from 'billboard.js';
 
 // src
 import BillboardChart from '../src';
@@ -7,18 +8,18 @@ import BillboardChart from '../src';
 const CHART_DATA = {
   json: {
     data1: [30],
-    data2: [120]
+    data2: [120],
   },
-  type: 'donut'
+  type: donut(),
 };
 
 const SIZE = {
   height: 500,
-  width: 500
+  width: 500,
 };
 
 const STYLE = {
-  display: 'inline-block'
+  display: 'inline-block',
 };
 
 class DonutChart extends PureComponent {
@@ -78,7 +79,7 @@ class DonutChart extends PureComponent {
             0.2,
             0.2,
             0.2,
-            0.2
+            0.2,
           ],
           versicolor: [
             1.4,
@@ -130,7 +131,7 @@ class DonutChart extends PureComponent {
             1.3,
             1.3,
             1.1,
-            1.3
+            1.3,
           ],
           virginica: [
             2.5,
@@ -182,14 +183,14 @@ class DonutChart extends PureComponent {
             1.9,
             2.0,
             2.3,
-            1.8
-          ]
-        }
+            1.8,
+          ],
+        },
       });
 
       setTimeout(() => {
         this.element.unloadData({
-          ids: ['data1', 'data2']
+          ids: ['data1', 'data2'],
         });
       }, 1000);
     }, 1000);

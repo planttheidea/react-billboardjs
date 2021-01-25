@@ -1,5 +1,22 @@
 # react-billboardjs CHANGELOG
 
+## 2.0.0
+
+**Breaking changes**
+
+- Only version 2+ of `billboard.js` is supported
+- CSS files are no longer re-exported through this package
+  - Please import from the `billboard.js` package itself, as shown in the README
+- `BillboardChart.prototype.config` has been renamed to `updateConfig`
+
+**Enhancements**
+
+- No longer requires `requestAnimationFrame` (speed)
+- Uses bound prototype methods instead of newly-generated methods per-instance (memory)
+- Excludes `propTypes` if `process.env.NODE_ENV` is `'production'` (smaller size)
+- `billboard.js` is the sole dependency (smaller size)
+  - Other than `react` of course ;)
+
 ## 1.5.6
 
 - Fix [#44](https://github.com/planttheidea/react-billboardjs/issues/44), where React was giving warnings due to improper use of `getSnapshotBeforeUpdate`
