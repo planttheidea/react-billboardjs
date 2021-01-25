@@ -66,9 +66,47 @@ describe('react-billboardjs', () => {
       columns: [...data.columns, ['values', 1, 2, 3, 4, 5, 6]],
     };
 
-    rerender(<BillboardChart data={nextData} domProps={domProps} />);
+    rerender(<BillboardChart data={nextData} domProps={domProps} ref={ref} />);
 
     expect(bb.generate).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(nextData);
+
+    spy.mockRestore();
+  });
+
+  test('a pure component should only update if the props have changed', () => {
+    const data = {
+      columns: [['values', 30, 20, 50, 40, 60, 50]],
+      type: 'line',
+    };
+    const domProps = { 'data-testid': 'line' };
+    const ref = React.createRef(null);
+
+    const { rerender } = render(
+      <BillboardChart data={data} domProps={domProps} isPure ref={ref} />,
+    );
+
+    const instance = ref.current;
+
+    const spy = jest.spyOn(instance.chart, 'load');
+
+    bb.generate.mockClear();
+
+    rerender(
+      <BillboardChart data={data} domProps={domProps} isPure ref={ref} />,
+    );
+
+    expect(spy).not.toHaveBeenCalled();
+
+    const nextData = {
+      ...data,
+      columns: [...data.columns, ['values', 1, 2, 3, 4, 5, 6]],
+    };
+
+    rerender(
+      <BillboardChart data={nextData} domProps={domProps} isPure ref={ref} />,
+    );
+
     expect(spy).toHaveBeenCalledWith(nextData);
 
     spy.mockRestore();
@@ -209,6 +247,25 @@ describe('react-billboardjs', () => {
     expect(spy).toHaveBeenCalledWith('line.max', 100, true);
 
     spy.mockRestore();
+  });
+
+  describe('statics', () => {
+    test('getInstances should return an array of chart instances', () => {
+      const data = {
+        columns: [['values', 30, 20, 50, 40, 60, 50]],
+        type: 'line',
+      };
+      const domProps = { 'data-testid': 'line' };
+      const ref = React.createRef(null);
+
+      render(<BillboardChart data={data} domProps={domProps} ref={ref} />);
+
+      const instance = ref.current;
+
+      const instances = BillboardChart.getInstances();
+
+      expect(instances).toEqual([instance.chart]);
+    });
   });
 
   describe('error handling', () => {
