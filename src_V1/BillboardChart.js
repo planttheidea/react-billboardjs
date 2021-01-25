@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { createComponent, createElementRef } from 'react-parm';
 // billboard
-import bb from './bb';
+import { getBillboardJs } from './bb';
 // shapes
 import {
   AREA_SHAPE,
@@ -70,7 +70,7 @@ export const componentDidMount = ({ props, updateChart }) =>
 
 export const shouldComponentUpdate = (
   { context, props },
-  [nextProps, , nextContext]
+  [nextProps, , nextContext],
 ) =>
   nextProps.isPure
     ? !shallowEqual(props, nextProps) || !shallowEqual(context, nextContext)
@@ -167,7 +167,7 @@ export const generateChart = ({
     ...config
   },
 }) =>
-  bb().generate({
+  getBillboardJs().generate({
     bindto: chartElement,
     ...config,
   });
@@ -180,7 +180,7 @@ export const generateChart = ({
  *
  * @returns {Array<Object>} the array of chart instances
  */
-export const getInstances = () => bb().instance;
+export const getInstances = () => getBillboardJs().instance;
 
 /**
  * @function loadData

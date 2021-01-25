@@ -8,12 +8,10 @@ export let bb = null;
  *
  * @returns {Object}
  */
-const getBb = () => {
+export const getBb = () => {
   if (!bb) {
     bb = require('billboard.js').bb;
   }
 
   return bb;
 };
-
-export default getBb;

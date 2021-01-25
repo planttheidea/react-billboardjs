@@ -1,70 +1,77 @@
 // external dependencies
-import React, {PureComponent} from 'react';
+import React, { PureComponent } from 'react';
+import { area, areaSpline, bar } from 'billboard.js';
 
 // src
 import BillboardChart from '../src';
 
 const CHART_DATA = {
-  columns: [['data1', 30, 200, 100, 400, 150, 250], ['data2', 130, 100, 140, 200, 150, 50]],
+  columns: [
+    ['data1', 30, 200, 100, 400, 150, 250],
+    ['data2', 130, 100, 140, 200, 150, 50],
+  ],
   types: {
-    data1: 'bar',
-    data2: 'area',
-    data3: 'area-spline'
-  }
+    data1: bar(),
+    data2: area(),
+  },
 };
 
 const CHART_AXIS = {
   rotated: true,
   x: {
     categories: ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'],
-    type: 'category'
-  }
+    type: 'category',
+  },
 };
 
 const DOM_PROPS = {
-  'data-type': 'bar'
+  'data-type': 'bar',
 };
 
 class BarChart extends PureComponent {
   static displayName = 'BarChart';
 
   state = {
-    data: null
+    data: CHART_DATA,
   };
 
   componentDidMount() {
     setTimeout(() => {
-      this.setState(
-        () => ({
-          data: CHART_DATA
-        }),
-        () => {
-          setTimeout(() => {
-            this.element.loadData({
-              columns: [['data3', 130, 150, 200, 300, 200, 100]]
-            });
+      this.instance.loadData({
+        columns: [['data3', 130, 150, 200, 300, 200, 100]],
+        types: {
+          data3: areaSpline(),
+        },
+      });
 
-            console.log(BillboardChart.getInstances());
-          }, 1000);
-        }
-      );
-    }, 1000);
+      console.log(BillboardChart.getInstances());
+
+      setTimeout(() => {
+        // this.instance.destroyChart();
+
+        this.instance.exportChart('image/jpeg', (dataUrl) =>
+          console.log(dataUrl),
+        );
+      }, 1000);
+    }, 3000);
   }
 
-  element = null;
+  instance = null;
 
   getRef = (Instance) => {
-    this.element = Instance;
+    this.instance = Instance;
 
     console.log(Instance);
   };
 
   render() {
-    const {data} = this.state;
+    const { data } = this.state;
 
     if (!data) {
       return <p>Loading...</p>;
     }
+
+    console.log(data);
 
     return (
       /* eslint-disable prettier */

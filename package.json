@@ -28,7 +28,7 @@
   },
   "name": "react-billboardjs",
   "dependencies": {
-    "billboard.js": "^1.6.0",
+    "billboard.js": "^2.1.4",
     "fbjs": "^1.0.0",
     "prop-types": "^15.7.2",
     "react-parm": "^2.3.0"
@@ -57,6 +57,7 @@
     "eslint-loader": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
     "in-publish": "^2.0.0",
+    "jest": "^26.6.3",
     "mock-require": "^3.0.2",
     "nyc": "^13.3.0",
     "optimize-js-plugin": "^0.0.4",
@@ -104,10 +105,9 @@
     "release": "release-it",
     "release:beta": "release-it --config=.release-it.beta.json",
     "start": "npm run dev",
-    "test": "NODE_PATH=. NODE_ENV=test ava",
-    "test:coverage": "nyc npm test",
-    "test:update": "nyc npm test -- --update-snapshots",
-    "test:watch": "NODE_PATH=. NODE_ENV=test ava --watch",
+    "test": "NODE_ENV=test NODE_PATH=. jest",
+    "test:coverage": "npm test -- --coverage",
+    "test:watch": "npm test -- --watch",
     "transpile:es": "BABEL_ENV=es babel src --out-dir es --copy-files",
     "transpile:lib": "BABEL_ENV=lib babel src --out-dir lib --copy-files"
   },

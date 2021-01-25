@@ -40,10 +40,10 @@ module.exports = Object.assign({}, defaultConfig, {
         return rule;
       }),
       {
-        include: [path.resolve(statics.ROOT, 'src')],
+        include: [path.resolve(statics.ROOT, 'node_modules', 'billboard.js')],
         test: /\.css$/,
         use: [
-          {loader: 'style-loader'},
+          { loader: 'style-loader' },
           {
             loader: 'css-loader',
             options: {

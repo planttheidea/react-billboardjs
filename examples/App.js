@@ -1,7 +1,7 @@
-import React, {PureComponent} from 'react';
-import {render} from 'react-dom';
+import React, { PureComponent } from 'react';
+import { render } from 'react-dom';
 
-import '../src/billboard.css';
+import 'billboard.js/dist/billboard.css';
 
 // charts
 import BarChart from './BarChart';
@@ -16,9 +16,11 @@ class App extends PureComponent {
       <div>
         <h1>App</h1>
 
-        <LineChart />
-        <BarChart />
-        <DonutChart />
+        <div>
+          <LineChart />
+          <BarChart />
+          <DonutChart />
+        </div>
       </div>
     );
   }
