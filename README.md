@@ -11,6 +11,7 @@ _This is based on [react-c3js](https://github.com/bcbcarl/react-c3js), with modi
 - [react-billboardjs](#react-billboardjs)
   - [Installation](#installation)
   - [Usage](#usage)
+    - [Production usage](#production-usage)
   - [Required props](#required-props)
     - [data](#data)
   - [Optional props](#optional-props)
@@ -65,6 +66,26 @@ class LineChart extends Component {
 ```
 
 Make sure to include the CSS file provided with `billboard.js` to include appropriate styles for billboard. The example above is if you are using `webpack` or a similar bundler, but the styles are global so bring them in however is best for your application.
+
+### Production usage
+
+The `PropTypes` of this package are quite large, as they try to be comprehensive coverage for the configuration of `billboard.js`. If you do not want to incur this cost in production, then you can point your package to the `min` build which excludes them. Example in a webpack config:
+
+```js
+module.exports = {
+  // ...config
+  resolve: {
+    alias: {
+      'react-billboardjs': path.resolve(
+        __dirname, // assuming config is top of the directory
+        'node_modules/react-billboardjs/dist/react-billboardjs.min.js',
+      ),
+    },
+  },
+};
+```
+
+This creates a much smaller bundle, as the minified + gzipped size of `react-billboardjs` drops from 4.51KiB to 1.39KiB.
 
 ## Required props
 

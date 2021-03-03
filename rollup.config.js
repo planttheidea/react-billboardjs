@@ -1,5 +1,4 @@
 import babel from '@rollup/plugin-babel';
-import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 const EXTERNALS = [
@@ -7,7 +6,7 @@ const EXTERNALS = [
   ...Object.keys(pkg.peerDependencies || {}),
 ];
 
-const DEFAULT_OUTPUT = {
+export const DEFAULT_OUTPUT = {
   exports: 'named',
   globals: {
     'billboard.js': 'billboard',
@@ -18,7 +17,7 @@ const DEFAULT_OUTPUT = {
   sourcemap: true,
 };
 
-const DEFAULT_CONFIG = {
+export const DEFAULT_CONFIG = {
   external: EXTERNALS,
   input: 'src/index.js',
   output: [
@@ -35,15 +34,4 @@ const DEFAULT_CONFIG = {
   ],
 };
 
-export default [
-  DEFAULT_CONFIG,
-  {
-    ...DEFAULT_CONFIG,
-    output: {
-      ...DEFAULT_OUTPUT,
-      file: pkg.browser.replace('.js', '.min.js'),
-      format: 'umd',
-    },
-    plugins: [...DEFAULT_CONFIG.plugins, terser()],
-  },
-];
+export default DEFAULT_CONFIG;
