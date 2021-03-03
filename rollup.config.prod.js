@@ -13,8 +13,6 @@ export default {
     ...DEFAULT_CONFIG.plugins,
     terser({
       compress: { passes: 3 },
-      mangle: false,
-      format: { beautify: true },
     }),
   ],
 };
