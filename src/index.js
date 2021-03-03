@@ -1,5 +1,6 @@
 import { bb } from 'billboard.js';
 import React from 'react';
+import propTypes from './propTypes';
 
 function shallowEqual(a, b) {
   const aKeys = Object.keys(a);
@@ -25,6 +26,8 @@ function shallowEqual(a, b) {
 
 class BillboardChart extends React.Component {
   static displayName = 'BillboardChart';
+
+  static propTypes = propTypes;
 
   static getInstances = () => {
     return bb.instance;
@@ -163,10 +166,6 @@ class BillboardChart extends React.Component {
       />
     );
   }
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  BillboardChart.propTypes = require('./propTypes').default;
 }
 
 export default BillboardChart;
