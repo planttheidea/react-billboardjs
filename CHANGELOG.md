@@ -9,6 +9,11 @@
 - `onmouseover` renamed to `onover``
 - `title.position` now only `center`, `right`, or `left`
 
+**Enhancements**
+
+- Added `bubble`, `candlestick`, and `scatter` definitions in `PropTypes`
+- Updated `PropTypes` definitions with new options defined in `billboard.js` documentation
+
 ## 2.0.0
 
 **Breaking changes**
