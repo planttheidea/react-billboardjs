@@ -1,10 +1,24 @@
 # react-billboardjs CHANGELOG
 
+## 3.0.0
+
+**Breaking changes**
+
+- Only version 3 of `billboard.js` is supported
+- `onmouseout` renamed to `onout`
+- `onmouseover` renamed to `onover``
+- `title.position` now only `center`, `right`, or `left`
+
+**Enhancements**
+
+- Added `bubble`, `candlestick`, and `scatter` definitions in `PropTypes`
+- Updated `PropTypes` definitions with new options defined in `billboard.js` documentation
+
 ## 2.0.0
 
 **Breaking changes**
 
-- Only version 2+ of `billboard.js` is supported
+- Only version 2 of `billboard.js` is supported
 - CSS files are no longer re-exported through this package
   - Please import from the `billboard.js` package itself, as shown in the README
 - `BillboardChart.prototype.config` has been renamed to `updateConfig`
@@ -13,7 +27,7 @@
 
 - No longer requires `requestAnimationFrame` (speed)
 - Uses bound prototype methods instead of newly-generated methods per-instance (memory)
-- Excludes `propTypes` if `process.env.NODE_ENV` is `'production'` (smaller size)
+- Excludes `propTypes` if applied with [production usage](./README.md#production-usage) (smaller size)
 - `billboard.js` is the sole dependency (smaller size)
   - Other than `react` of course ;)
 

@@ -10,7 +10,7 @@ const ROOT = __dirname;
 module.exports = {
   cache: true,
 
-  devtool: '#source-map',
+  devtool: 'source-map',
 
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
