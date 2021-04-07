@@ -6,7 +6,7 @@
 
 - Only version 3 of `billboard.js` is supported
 - `onmouseout` renamed to `onout`
-- `onmouseover` renamed to `onover``
+- `onmouseover` renamed to `onover`
 - `title.position` now only `center`, `right`, or `left`
 
 **Enhancements**
