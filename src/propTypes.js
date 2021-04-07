@@ -1,14 +1,38 @@
 // external dependencies
 import PropTypes from 'prop-types';
 
-const AREA_SHAPE = PropTypes.shape({
-  above: PropTypes.bool,
-  zerobased: PropTypes.bool,
+const {
+  any,
+  arrayOf,
+  bool,
+  func,
+  instanceOf,
+  number,
+  object,
+  objectOf,
+  oneOf,
+  oneOfType,
+  shape,
+  string,
+} = PropTypes;
+
+const AREA_SHAPE = shape({
+  above: bool,
+  front: bool,
+  linearGradient: oneOfType([
+    bool,
+    shape({
+      x: arrayOf(number),
+      y: arrayOf(number),
+      stops: arrayOf(any),
+    }),
+  ]),
+  zerobased: bool,
 });
 
-const LABEL_SHAPE = PropTypes.oneOfType([
-  PropTypes.shape({
-    position: PropTypes.oneOf([
+const LABEL_SHAPE = oneOfType([
+  shape({
+    position: oneOf([
       'inner-bottom',
       'inner-center',
       'inner-left',
@@ -22,576 +46,677 @@ const LABEL_SHAPE = PropTypes.oneOfType([
       'outer-right',
       'outer-top',
     ]),
-    text: PropTypes.string,
+    text: string,
   }),
-  PropTypes.string,
+  string,
 ]);
 
-const AXIS_TYPE_SHAPE = PropTypes.oneOf(['category', 'indexed', 'timeseries']);
+const AXIS_TYPE_SHAPE = oneOf(['category', 'indexed', 'timeseries']);
 
-const AXIS_Y_PADDING_SHAPE = PropTypes.shape({
-  bottom: PropTypes.number,
-  top: PropTypes.number,
+const AXIS_Y_PADDING_SHAPE = shape({
+  bottom: number,
+  top: number,
 });
 
-const AXIS_TICK_SHAPE = PropTypes.shape({
-  count: PropTypes.number,
-  format: PropTypes.func,
-  text: PropTypes.shape({
-    position: PropTypes.shape({
-      x: PropTypes.number,
-      y: PropTypes.number,
+const AXIS_TICK_SHAPE = shape({
+  count: number,
+  culling: oneOfType([
+    bool,
+    shape({
+      max: number,
+    }),
+  ]),
+  format: func,
+  outer: bool,
+  rotate: number,
+  show: bool,
+  stepSize: number,
+  text: shape({
+    position: shape({
+      x: number,
+      y: number,
+    }),
+    show: bool,
+  }),
+  values: arrayOf(oneOfType([number, instanceOf(Date)])),
+});
+
+const AXES_SHAPE = arrayOf(
+  shape({
+    domain: arrayOf(number),
+    tick: shape({
+      outer: bool,
+      format: func,
+      count: number,
+      values: arrayOf(number),
     }),
   }),
-  values: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(Date)]),
-  ),
-});
+);
 
-const AXIS_SHAPE = PropTypes.shape({
-  rotated: PropTypes.bool,
-  x: PropTypes.shape({
-    categories: PropTypes.arrayOf(PropTypes.string),
-    clipPath: PropTypes.bool,
-    extent: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
-    height: PropTypes.number,
+const AXIS_SHAPE = shape({
+  rotated: bool,
+  x: shape({
+    axes: AXES_SHAPE,
+    categories: arrayOf(string),
+    clipPath: bool,
+    extent: arrayOf(arrayOf(number)),
+    height: number,
     label: LABEL_SHAPE,
-    localtime: PropTypes.bool,
-    max: PropTypes.number,
-    min: PropTypes.number,
-    padding: PropTypes.shape({
-      left: PropTypes.number,
-      right: PropTypes.number,
+    localtime: bool,
+    max: number,
+    min: number,
+    padding: shape({
+      left: number,
+      right: number,
     }),
-    show: PropTypes.bool,
-    tick: PropTypes.shape({
-      centered: PropTypes.bool,
-      count: PropTypes.number,
-      culling: PropTypes.oneOfType([
-        PropTypes.bool,
-        PropTypes.shape({
-          max: PropTypes.number,
+    show: bool,
+    tick: shape({
+      centered: bool,
+      count: number,
+      culling: oneOfType([
+        bool,
+        shape({
+          max: number,
         }),
       ]),
-      fit: PropTypes.bool,
-      format: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-      multiline: PropTypes.bool,
-      outer: PropTypes.bool,
-      rotate: PropTypes.number,
-      tooltip: PropTypes.bool,
-      values: PropTypes.arrayOf(
-        PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(Date)]),
-      ),
-      width: PropTypes.number,
+      fit: bool,
+      format: oneOfType([func, string]),
+      multiline: bool,
+      outer: bool,
+      rotate: number,
+      tooltip: bool,
+      values: arrayOf(oneOfType([number, instanceOf(Date)])),
+      width: number,
     }),
     type: AXIS_TYPE_SHAPE,
   }),
-  y: PropTypes.shape({
-    center: PropTypes.number,
-    default: PropTypes.arrayOf(PropTypes.number),
-    format: PropTypes.func,
-    inner: PropTypes.bool,
-    inverted: PropTypes.bool,
+  y: shape({
+    axes: AXES_SHAPE,
+    center: number,
+    clipPath: bool,
+    default: arrayOf(number),
+    format: func,
+    inner: bool,
+    inverted: bool,
     label: LABEL_SHAPE,
-    max: PropTypes.number,
-    min: PropTypes.number,
+    max: number,
+    min: number,
     padding: AXIS_Y_PADDING_SHAPE,
-    show: PropTypes.bool,
+    show: bool,
     tick: AXIS_TICK_SHAPE,
     type: AXIS_TYPE_SHAPE,
   }),
-  y2: PropTypes.shape({
-    center: PropTypes.number,
-    default: PropTypes.arrayOf(PropTypes.number),
-    inner: PropTypes.bool,
-    inverted: PropTypes.bool,
+  y2: shape({
+    axes: AXES_SHAPE,
+    center: number,
+    default: arrayOf(number),
+    inner: bool,
+    inverted: bool,
     label: LABEL_SHAPE,
-    max: PropTypes.number,
-    min: PropTypes.number,
+    max: number,
+    min: number,
     padding: AXIS_Y_PADDING_SHAPE,
-    show: PropTypes.bool,
+    show: bool,
     tick: AXIS_TICK_SHAPE,
   }),
 });
 
-const BAR_SHAPE = PropTypes.shape({
-  padding: PropTypes.number,
-  radius: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({
-      ratio: PropTypes.number,
-    }),
-  ]),
-  width: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.shape({
-      max: PropTypes.number,
-      ratio: PropTypes.number,
-    }),
-  ]),
-  zerobased: PropTypes.bool,
+const BACKGROUND_SHAPE = shape({
+  class: string,
+  color: string,
+  imgUrl: string,
 });
 
-const COLOR_SHAPE = PropTypes.shape({
-  pattern: PropTypes.arrayOf(PropTypes.string),
-  threshold: PropTypes.shape({
-    max: PropTypes.number,
-    unit: PropTypes.string,
-    value: PropTypes.string,
+const BAR_SHAPE = shape({
+  label: shape({
+    threshold: number,
+  }),
+  padding: number,
+  radius: oneOfType([
+    number,
+    shape({
+      ratio: number,
+    }),
+  ]),
+  sensitivity: number,
+  width: oneOfType([
+    number,
+    shape({
+      dataname: number,
+      max: number,
+      ratio: number,
+    }),
+  ]),
+  zerobased: bool,
+});
+
+const BUBBLE_SHAPE = shape({
+  maxR: oneOfType([number, func]),
+  zerobased: bool,
+});
+
+const CANDLESTICK_SHAPE = shape({
+  color: shape({
+    down: oneOfType([
+      string,
+      shape({
+        dataname: string,
+      }),
+    ]),
+  }),
+  width: number,
+});
+
+const COLOR_SHAPE = shape({
+  onover: oneOfType([string, func, object]),
+  pattern: arrayOf(string),
+  tiles: func,
+  threshold: shape({
+    max: number,
+    unit: string,
+    value: string,
   }),
 });
 
-const LINE_SHAPE = PropTypes.shape({
-  classes: PropTypes.arrayOf(PropTypes.string),
-  connectNull: PropTypes.bool,
-  point: PropTypes.oneOf([PropTypes.arrayOf(PropTypes.string), PropTypes.bool]),
-  step: PropTypes.shape({
-    type: PropTypes.oneOf(['step', 'step-after', 'step-before']),
+const LINE_SHAPE = shape({
+  classes: arrayOf(string),
+  connectNull: bool,
+  point: oneOf([arrayOf(string), bool]),
+  step: shape({
+    type: oneOf(['step', 'step-after', 'step-before']),
   }),
+  zerobased: bool,
 });
 
-const ORDER_SHAPE = PropTypes.oneOfType([
-  PropTypes.func,
-  PropTypes.oneOf(['asc', 'desc', '', null]),
+const ORDER_SHAPE = oneOfType([func, oneOf(['asc', 'desc', '', null])]);
+
+const DATA_TYPE_SHAPE = oneOf([
+  'area',
+  'area-line-range',
+  'area-range',
+  'area-spline',
+  'area-step',
+  'bar',
+  'bubble',
+  'donut',
+  'gauge',
+  'line',
+  'pie',
+  'radar',
+  'scatter',
+  'spline',
 ]);
 
-const DATA_SHAPE = PropTypes.shape({
-  axes: PropTypes.object,
-  classes: PropTypes.object,
-  color: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({
-      pattern: PropTypes.arrayOf(PropTypes.string),
-      tiles: PropTypes.func,
+const DATA_SHAPE = shape({
+  axes: object,
+  classes: object,
+  color: oneOfType([
+    func,
+    shape({
+      pattern: arrayOf(string),
+      tiles: func,
     }),
   ]),
-  colors: PropTypes.object,
-  columns: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.number),
-        PropTypes.number,
-        PropTypes.shape({
-          height: PropTypes.number,
-          low: PropTypes.number,
-          mid: PropTypes.number,
+  colors: objectOf(
+    oneOfType([
+      func,
+      shape({
+        pattern: arrayOf(string),
+        tiles: func,
+      }),
+    ]),
+  ),
+  columns: arrayOf(
+    arrayOf(
+      oneOfType([
+        arrayOf(number),
+        number,
+        shape({
+          height: number,
+          low: number,
+          mid: number,
         }),
-        PropTypes.string,
+        string,
       ]),
     ),
   ),
-  empty: PropTypes.shape({
+  empty: shape({
     label: LABEL_SHAPE,
   }),
-  groups: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.string),
-      PropTypes.string,
-    ]),
-  ),
-  hide: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.arrayOf(PropTypes.string),
-  ]),
-  json: PropTypes.oneOfType([
-    PropTypes.arrayOf(PropTypes.object),
-    PropTypes.object,
-  ]),
-  keys: PropTypes.shape({
-    value: PropTypes.arrayOf(PropTypes.string),
-    x: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.string),
-      PropTypes.string,
-    ]),
-    y: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.string),
-      PropTypes.string,
-    ]),
-    y2: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.string),
-      PropTypes.string,
-    ]),
+  filter: func,
+  groups: arrayOf(oneOfType([arrayOf(string), string])),
+  headers: string,
+  hide: oneOfType([bool, arrayOf(string)]),
+  idConverter: func,
+  json: oneOfType([arrayOf(object), object]),
+  keys: shape({
+    value: arrayOf(string),
+    x: oneOfType([arrayOf(string), string]),
+    y: oneOfType([arrayOf(string), string]),
+    y2: oneOfType([arrayOf(string), string]),
   }),
-  labels: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      format: PropTypes.func,
-      position: PropTypes.shape({
-        x: PropTypes.number,
-        y: PropTypes.number,
+  labels: oneOfType([
+    bool,
+    shape({
+      format: func,
+      position: shape({
+        x: number,
+        y: number,
       }),
     }),
   ]),
   line: LINE_SHAPE,
-  mimeType: PropTypes.string,
-  names: PropTypes.object,
-  onclick: PropTypes.func,
-  onmax: PropTypes.func,
-  onmin: PropTypes.func,
-  onout: PropTypes.func,
-  onover: PropTypes.func,
-  onselected: PropTypes.func,
-  onunselected: PropTypes.func,
+  mimeType: string,
+  names: object,
+  onclick: func,
+  onmax: func,
+  onmin: func,
+  onout: func,
+  onover: func,
+  onselected: func,
+  onunselected: func,
   order: ORDER_SHAPE,
-  point: PropTypes.shape({
-    focus: PropTypes.shape({
-      expand: PropTypes.shape({
-        enabled: PropTypes.bool,
-        r: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  point: shape({
+    focus: shape({
+      expand: shape({
+        enabled: bool,
+        r: oneOfType([bool, number]),
       }),
     }),
-    pattern: PropTypes.arrayOf(PropTypes.string),
-    r: PropTypes.oneOfType([PropTypes.number, PropTypes.func]),
-    select: PropTypes.shape({
-      r: PropTypes.number,
+    pattern: arrayOf(string),
+    r: oneOfType([number, func]),
+    select: shape({
+      r: number,
     }),
-    show: PropTypes.bool,
-    type: PropTypes.oneOf(['circle', 'rectangle']),
+    show: bool,
+    type: oneOf(['circle', 'rectangle']),
   }),
-  regions: PropTypes.object,
-  rows: PropTypes.arrayOf(
-    PropTypes.arrayOf(
-      PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    ),
-  ),
-  selection: PropTypes.shape({
-    draggable: PropTypes.bool,
-    enabled: PropTypes.bool,
-    isselectable: PropTypes.bool,
-    multiple: PropTypes.bool,
+  regions: object,
+  rows: arrayOf(arrayOf(oneOfType([number, string]))),
+  selection: shape({
+    draggable: bool,
+    enabled: bool,
+    grouped: bool,
+    isselectable: bool,
+    multiple: bool,
   }),
-  type: PropTypes.oneOf([
-    'area',
-    'area-line-range',
-    'area-range',
-    'area-spline',
-    'area-step',
-    'bar',
-    'bubble',
-    'donut',
-    'gauge',
-    'line',
-    'pie',
-    'radar',
-    'scatter',
-    'spline',
-  ]),
-  types: PropTypes.object,
-  url: PropTypes.string,
-  x: PropTypes.string,
-  xFormat: PropTypes.string,
-  xLocaltime: PropTypes.bool,
-  xSort: PropTypes.bool,
-  xs: PropTypes.object,
+  stack: shape({
+    normalize: bool,
+  }),
+  type: DATA_TYPE_SHAPE,
+  types: objectOf(DATA_TYPE_SHAPE),
+  url: string,
+  x: string,
+  xFormat: string,
+  xLocaltime: bool,
+  xSort: bool,
+  xs: object,
 });
 
-const DONUT_SHAPE = PropTypes.shape({
-  expand: PropTypes.bool,
-  label: PropTypes.shape({
-    format: PropTypes.func,
-    radio: PropTypes.oneOfType([PropTypes.func, PropTypes.number]),
-    show: PropTypes.bool,
-    threshold: PropTypes.number,
+const DONUT_SHAPE = shape({
+  expand: bool,
+  label: shape({
+    format: func,
+    ratio: oneOfType([func, number]),
+    show: bool,
+    threshold: number,
   }),
-  padAngle: PropTypes.number,
-  title: PropTypes.string,
-  width: PropTypes.number,
+  padAngle: number,
+  startingAngle: number,
+  title: string,
+  width: number,
 });
 
-const GAUGE_SHAPE = PropTypes.shape({
-  expand: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      duration: PropTypes.number,
+const GAUGE_SHAPE = shape({
+  arcs: shape({
+    minWidth: string,
+  }),
+  arcLength: number,
+  background: bool,
+  expand: oneOfType([
+    bool,
+    shape({
+      duration: number,
+      rate: number,
     }),
   ]),
-  fullCircle: PropTypes.bool,
-  label: PropTypes.shape({
-    extents: PropTypes.func,
-    format: PropTypes.func,
-    show: PropTypes.bool,
+  fullCircle: bool,
+  label: shape({
+    extents: func,
+    format: func,
+    show: bool,
   }),
-  max: PropTypes.number,
-  startingAngle: PropTypes.number,
-  units: PropTypes.string,
-  width: PropTypes.number,
+  max: number,
+  min: number,
+  startingAngle: number,
+  title: string,
+  type: string,
+  units: string,
+  width: number,
 });
 
-const LINES_SHAPE = PropTypes.oneOfType([
-  PropTypes.arrayOf(
-    PropTypes.shape({
-      class: PropTypes.string,
-      position: PropTypes.string,
-      text: PropTypes.string,
-      value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.instanceOf(Date),
-      ]),
+const LINES_SHAPE = oneOfType([
+  arrayOf(
+    shape({
+      class: string,
+      position: string,
+      text: string,
+      value: oneOfType([number, string, instanceOf(Date)]),
     }),
   ),
-  PropTypes.bool,
+  bool,
 ]);
 
-const GRID_SHAPE = PropTypes.shape({
-  focus: PropTypes.shape({
-    show: PropTypes.bool,
+const GRID_SHAPE = shape({
+  focus: shape({
+    edge: bool,
+    show: bool,
+    y: bool,
   }),
-  lines: PropTypes.shape({
-    front: PropTypes.bool,
+  front: bool,
+  lines: shape({
+    front: bool,
   }),
-  x: PropTypes.shape({
+  x: shape({
     lines: LINES_SHAPE,
-    show: PropTypes.bool,
+    show: bool,
   }),
-  y: PropTypes.shape({
+  y: shape({
     lines: LINES_SHAPE,
-    show: PropTypes.bool,
-    ticks: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+    show: bool,
+    ticks: oneOfType([bool, number]),
   }),
 });
 
-const INTERACTION_SHAPE = PropTypes.shape({
-  brighten: PropTypes.bool,
-  enabled: PropTypes.bool,
-  inputType: PropTypes.shape({
-    mouse: PropTypes.bool,
-    touch: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.shape({
-        preventDefault: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+const INTERACTION_SHAPE = shape({
+  brighten: bool,
+  enabled: bool,
+  inputType: shape({
+    mouse: bool,
+    touch: oneOfType([
+      bool,
+      shape({
+        preventDefault: oneOfType([bool, number]),
       }),
     ]),
   }),
 });
 
-const LEGEND_SHAPE = PropTypes.shape({
-  contents: PropTypes.shape({
-    bindto: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    template: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+const LEGEND_SHAPE = shape({
+  contents: shape({
+    bindto: oneOfType([object, string]),
+    template: oneOfType([func, string]),
   }),
-  equally: PropTypes.bool,
-  hide: PropTypes.bool,
-  inset: PropTypes.shape({
-    anchor: PropTypes.oneOf([
-      'bottom-left',
-      'bottom-right',
-      'top-left',
-      'top-right',
-    ]),
-    step: PropTypes.number,
-    x: PropTypes.number,
-    y: PropTypes.number,
+  equally: bool,
+  hide: bool,
+  inset: shape({
+    anchor: oneOf(['bottom-left', 'bottom-right', 'top-left', 'top-right']),
+    step: number,
+    x: number,
+    y: number,
   }),
-  item: PropTypes.shape({
-    onclick: PropTypes.func,
-    onout: PropTypes.func,
-    onover: PropTypes.func,
-    tile: PropTypes.shape({
-      height: PropTypes.number,
-      width: PropTypes.number,
+  item: shape({
+    onclick: func,
+    onout: func,
+    onover: func,
+    tile: shape({
+      height: number,
+      width: number,
     }),
   }),
-  padding: PropTypes.number,
-  position: PropTypes.oneOf(['bottom', 'right', 'inset']),
-  show: PropTypes.bool,
-  usePoint: PropTypes.bool,
+  padding: number,
+  position: oneOf(['bottom', 'right', 'inset']),
+  show: bool,
+  usePoint: bool,
 });
 
-const PADDING_SHAPE = PropTypes.shape({
-  bottom: PropTypes.number,
-  left: PropTypes.number,
-  right: PropTypes.number,
-  top: PropTypes.number,
+const PADDING_SHAPE = shape({
+  bottom: number,
+  left: number,
+  right: number,
+  top: number,
 });
 
-const PIE_SHAPE = PropTypes.shape({
-  expand: PropTypes.bool,
-  innerRadius: PropTypes.number,
-  label: PropTypes.shape({
-    format: PropTypes.func,
-    ratio: PropTypes.number,
-    show: PropTypes.bool,
-    threshold: PropTypes.number,
+const PIE_SHAPE = shape({
+  expand: oneOfType([
+    bool,
+    shape({
+      duration: number,
+      rate: number,
+    }),
+  ]),
+  innerRadius: number,
+  label: shape({
+    format: func,
+    ratio: number,
+    show: bool,
+    threshold: number,
   }),
-  padAngle: PropTypes.number,
-  padding: PropTypes.number,
+  outerRadius: number,
+  padAngle: number,
+  padding: number,
+  startingAngle: number,
 });
 
-const POINT_SHAPE = PropTypes.shape({
-  focus: PropTypes.shape({
-    expand: PropTypes.shape({
-      enabled: PropTypes.bool,
-      r: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+const POINT_SHAPE = shape({
+  focus: shape({
+    expand: shape({
+      enabled: bool,
+      r: number,
     }),
   }),
-  r: PropTypes.number,
-  select: PropTypes.shape({
-    r: PropTypes.number,
+  opacity: number,
+  pattern: arrayOf(string),
+  r: oneOfType([number, func]),
+  select: shape({
+    r: number,
   }),
-  show: PropTypes.bool,
+  show: bool,
+  type: string,
 });
 
-const RADAR_SHAPE = PropTypes.shape({
-  axis: PropTypes.shape({
-    line: PropTypes.shape({
-      show: PropTypes.bool,
+const RADAR_SHAPE = shape({
+  axis: shape({
+    line: shape({
+      show: bool,
     }),
-    max: PropTypes.number,
-    text: PropTypes.shape({
-      show: PropTypes.bool,
-    }),
-  }),
-  direction: PropTypes.shape({
-    clockwise: PropTypes.bool,
-  }),
-  level: PropTypes.shape({
-    depth: PropTypes.number,
-    show: PropTypes.bool,
-    text: PropTypes.shape({
-      format: PropTypes.func,
-      show: PropTypes.bool,
+    max: number,
+    text: shape({
+      position: shape({
+        x: number,
+        y: number,
+      }),
+      show: bool,
     }),
   }),
-  size: PropTypes.shape({
-    ratio: PropTypes.number,
+  direction: shape({
+    clockwise: bool,
+  }),
+  level: shape({
+    depth: number,
+    show: bool,
+    text: shape({
+      format: func,
+      show: bool,
+    }),
+  }),
+  size: shape({
+    ratio: number,
   }),
 });
 
-const REGION_SHAPE = PropTypes.shape({
-  axis: PropTypes.string,
-  class: PropTypes.string,
-  end: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  start: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  style: PropTypes.object,
+const REGION_SHAPE = shape({
+  axis: string,
+  class: string,
+  end: oneOfType([number, string]),
+  start: oneOfType([number, string]),
+  style: object,
 });
 
-const RESIZE_SHAPE = PropTypes.shape({
-  auto: PropTypes.bool,
+const RENDER_SHAPE = shape({
+  lazy: bool,
+  observe: bool,
 });
 
-const SIZE_SHAPE = PropTypes.shape({
-  height: PropTypes.number,
-  width: PropTypes.number,
+const RESIZE_SHAPE = shape({
+  auto: bool,
 });
 
-const SPLINE_SHAPE = PropTypes.shape({
-  interpolation: PropTypes.shape({
-    type: PropTypes.string,
+const SCATTER_SHAPE = shape({
+  zerobased: bool,
+});
+
+const SIZE_SHAPE = shape({
+  height: number,
+  width: number,
+});
+
+const SPLINE_SHAPE = shape({
+  interpolation: shape({
+    type: string,
   }),
 });
 
-const SUBCHART_SHAPE = PropTypes.shape({
-  onbrush: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
-  show: PropTypes.bool,
-  size: PropTypes.shape({
-    height: PropTypes.number,
+const SUBCHART_SHAPE = shape({
+  axis: shape({
+    x: shape({
+      show: bool,
+      tick: shape({
+        show: bool,
+        text: shape({
+          show: bool,
+        }),
+      }),
+    }),
+  }),
+  onbrush: oneOfType([bool, func]),
+  show: bool,
+  size: shape({
+    height: number,
   }),
 });
 
-const SVG_SHAPE = PropTypes.shape({
-  className: PropTypes.string,
+const SVG_SHAPE = shape({
+  className: string,
 });
 
-const TITLE_SHAPE = PropTypes.shape({
+const TITLE_SHAPE = shape({
   padding: PADDING_SHAPE,
-  position: PropTypes.oneOf([
-    'bottom-center',
-    'bottom-left',
-    'bottom-right',
-    'top-center',
-    'top-left',
-    'top-right',
-  ]),
-  text: PropTypes.string,
+  position: oneOf(['center', 'right', 'left']),
+  text: string,
 });
 
-const TOOLTIP_SHAPE = PropTypes.shape({
-  contents: PropTypes.func,
-  format: PropTypes.shape({
-    name: PropTypes.func,
-    title: PropTypes.func,
-    value: PropTypes.func,
-  }),
-  grouped: PropTypes.bool,
-  linked: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      name: PropTypes.string,
+const TOOLTIP_SHAPE = shape({
+  contents: oneOfType([
+    func,
+    shape({
+      bindto: oneOfType([object, string]),
+      template: string,
+      text: object,
     }),
   ]),
+  doNotHide: bool,
+  format: shape({
+    name: func,
+    title: func,
+    value: func,
+  }),
+  init: shape({
+    show: bool,
+    position: object,
+    x: number,
+  }),
+  grouped: bool,
+  linked: oneOfType([
+    bool,
+    shape({
+      name: string,
+    }),
+  ]),
+  onshow: func,
+  onhide: func,
+  onshown: func,
+  onhidden: func,
   order: ORDER_SHAPE,
-  position: PropTypes.func,
-  show: PropTypes.bool,
+  position: func,
+  show: bool,
 });
 
-const TRANSITION_SHAPE = PropTypes.shape({
-  duration: PropTypes.number,
+const TRANSITION_SHAPE = shape({
+  duration: number,
 });
 
-const ZOOM_SHAPE = PropTypes.shape({
-  enabled: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      type: PropTypes.string,
+const ZOOM_SHAPE = shape({
+  enabled: oneOfType([
+    bool,
+    shape({
+      type: string,
     }),
   ]),
-  extent: PropTypes.arrayOf(PropTypes.number),
-  onzoom: PropTypes.func,
-  onzoomend: PropTypes.func,
-  onzoomstart: PropTypes.func,
-  rescale: PropTypes.bool,
-  resetButton: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.shape({
-      text: PropTypes.string,
+  extent: arrayOf(number),
+  onzoom: func,
+  onzoomend: func,
+  onzoomstart: func,
+  rescale: bool,
+  resetButton: oneOfType([
+    bool,
+    shape({
+      onclick: func,
+      text: string,
     }),
   ]),
-  x: PropTypes.shape({
-    max: PropTypes.number,
-    min: PropTypes.number,
+  x: shape({
+    max: number,
+    min: number,
   }),
+  type: string,
 });
 
 const propTypes = {
   area: AREA_SHAPE,
   axis: AXIS_SHAPE,
+  background: BACKGROUND_SHAPE,
   bar: BAR_SHAPE,
-  className: PropTypes.string,
-  clipPath: PropTypes.bool,
+  bubble: BUBBLE_SHAPE,
+  candlestick: CANDLESTICK_SHAPE,
+  className: string,
+  clipPath: bool,
   color: COLOR_SHAPE,
   data: DATA_SHAPE.isRequired,
-  domProps: PropTypes.object,
+  domProps: object,
   donut: DONUT_SHAPE,
   gauge: GAUGE_SHAPE,
   grid: GRID_SHAPE,
   interaction: INTERACTION_SHAPE,
-  isPure: PropTypes.bool,
+  isPure: bool,
   legend: LEGEND_SHAPE,
   line: LINE_SHAPE,
-  onafterinit: PropTypes.func,
-  onbeforeinit: PropTypes.func,
-  oninit: PropTypes.func,
-  onmouseout: PropTypes.func,
-  onmouseover: PropTypes.func,
-  onrendered: PropTypes.func,
-  onresize: PropTypes.func,
-  onresized: PropTypes.func,
+  onafterinit: func,
+  onbeforeinit: func,
+  oninit: func,
+  onout: func,
+  onover: func,
+  onrendered: func,
+  onresize: func,
+  onresized: func,
   padding: PADDING_SHAPE,
   pie: PIE_SHAPE,
+  plugins: arrayOf(any),
   point: POINT_SHAPE,
   radar: RADAR_SHAPE,
-  regions: PropTypes.arrayOf(REGION_SHAPE),
+  regions: arrayOf(REGION_SHAPE),
+  render: RENDER_SHAPE,
   resize: RESIZE_SHAPE,
+  scatter: SCATTER_SHAPE,
   size: SIZE_SHAPE,
   spline: SPLINE_SHAPE,
-  style: PropTypes.object,
+  style: object,
   subchart: SUBCHART_SHAPE,
   svg: SVG_SHAPE,
   title: TITLE_SHAPE,
   tooltip: TOOLTIP_SHAPE,
   transition: TRANSITION_SHAPE,
-  unloadBeforeLoad: PropTypes.bool,
+  unloadBeforeLoad: bool,
   zoom: ZOOM_SHAPE,
 };
 
