@@ -71,7 +71,7 @@
     "build:development": "rollup --config rollup.config.js --environment NODE_ENV:development",
     "build:production": "rollup --config rollup.config.prod.js --environment NODE_ENV:production",
     "clean": "rimraf dist",
-    "dev": "NODE_ENV=development webpack-dev-server --progress --colors",
+    "dev": "NODE_ENV=development webpack serve --progress",
     "lint": "eslint src/*.js",
     "lint:fix": "npm run lint -- --fix",
     "prepublishOnly": "npm run lint && npm run test:coverage && npm run clean && npm run build",
