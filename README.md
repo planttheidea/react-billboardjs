@@ -45,7 +45,7 @@ import React, { Component } from 'react';
 
 // component and styles
 import BillboardChart from 'react-billboardjs';
-import 'react-billboardjs/dist/billboard.css';
+import 'billboard.js/dist/billboard.css';
 
 const CHART_DATA = {
   columns: [
