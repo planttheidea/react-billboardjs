@@ -1,5 +1,9 @@
 # react-billboardjs CHANGELOG
 
+## 3.0.1
+
+- [#66](https://github.com/planttheidea/react-billboardjs/pull/66) - Fix `PropTypes` for `data.color` and `data.colors` (thanks [@ImADrafter](https://github.com/ImADrafter))
+
 ## 3.0.0
 
 **Breaking changes**
