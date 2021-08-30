@@ -250,20 +250,11 @@ const DATA_TYPE_SHAPE = oneOf([
 const DATA_SHAPE = shape({
   axes: object,
   classes: object,
-  color: oneOfType([
-    func,
-    shape({
-      pattern: arrayOf(string),
-      tiles: func,
-    }),
-  ]),
+  color: func,
   colors: objectOf(
     oneOfType([
       func,
-      shape({
-        pattern: arrayOf(string),
-        tiles: func,
-      }),
+      string,
     ]),
   ),
   columns: arrayOf(
