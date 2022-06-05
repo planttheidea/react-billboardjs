@@ -289,7 +289,7 @@ const DATA_SHAPE = shape({
   labels: oneOfType([
     bool,
     shape({
-      format: func,
+      format: oneOfType([func, objectOf(func)]),
       position: shape({
         x: number,
         y: number,
