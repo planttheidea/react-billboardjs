@@ -64,7 +64,7 @@
   "module": "dist/react-billboardjs.esm.js",
   "peerDependencies": {
     "prop-types": "^15.7.2",
-    "react": "^15.3.0 || ^16.0.0 || ^17.0.0"
+    "react": ">=15.3.0"
   },
   "repository": "git@github.com:planttheidea/react-billboardjs.git",
   "scripts": {

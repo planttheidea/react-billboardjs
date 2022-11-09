@@ -1,5 +1,9 @@
 # react-billboardjs CHANGELOG
 
+## 3.0.3
+
+- [#81](https://github.com/planttheidea/react-billboardjs/pull/81) - Loosen peer dependency of React to support v18+
+
 ## 3.0.2
 
 - [#72](https://github.com/planttheidea/react-billboardjs/pull/72) - Allow for an object of functions for `labels.format`
