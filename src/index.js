@@ -71,13 +71,13 @@ class BillboardChart extends React.Component {
     this.chart = null;
   }
 
-  exportChart(mimeType, onExported) {
+  exportChart(options, onExported) {
     if (!this.chart) {
       // eslint-disable-next-line no-console
       return console.error('No chart is available to export.');
     }
 
-    this.chart.export(mimeType, onExported);
+    this.chart.export(options, onExported);
   }
 
   loadData(data) {
