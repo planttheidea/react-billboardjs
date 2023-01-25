@@ -49,7 +49,7 @@ class BarChart extends PureComponent {
       setTimeout(() => {
         // this.instance.destroyChart();
 
-        this.instance.exportChart('image/jpeg', (dataUrl) =>
+        this.instance.exportChart({ mimeType: 'image/jpeg' }, (dataUrl) =>
           console.log(dataUrl),
         );
       }, 1000);

@@ -205,7 +205,7 @@ this.chartInstance.destroyChart();
 Exports the chart using the functionality introduced in `1.2.0` of `billboard.js` (equivalent to the native [Chart.export](https://naver.github.io/billboard.js/release/latest/doc/Chart.html#export) method).
 
 ```js
-this.chartInstance.exportChart('image/png', (dataUrl) => {
+this.chartInstance.exportChart({ mimeType: 'image/png' }, (dataUrl) => {
   const link = document.createElement('a');
 
   link.download = 'chart.png';
