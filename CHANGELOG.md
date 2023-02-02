@@ -1,5 +1,9 @@
 # react-billboardjs CHANGELOG
 
+## 3.0.4
+
+- [#91](https://github.com/planttheidea/react-billboardjs/pull/91) - fix export parameters
+
 ## 3.0.3
 
 - [#81](https://github.com/planttheidea/react-billboardjs/pull/81) - Loosen peer dependency of React to support v18+
