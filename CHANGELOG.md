@@ -2,7 +2,7 @@
 
 ## 3.0.4
 
-- [#91](https://github.com/planttheidea/react-billboardjs/pull/91) - fix export parameters
+- [#91](https://github.com/planttheidea/react-billboardjs/pull/91) - fix export parameters (thanks [@nickgirardo](https://github.com/nickgirardo))
 
 ## 3.0.3
 
